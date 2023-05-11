@@ -1,0 +1,54 @@
+db.sysFilelocker.drop();
+db.createCollection('sysFilelocker', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Common"],
+			properties: {
+				FileId: {
+					bsonType: "string",
+					maxLength: 128,
+					description: "System generated file identifier (unique id and/or URI)"
+				},
+				FileMeta: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 256,
+						description: "CSV, File metadata"
+					}
+				},
+				PropertyId: {
+					bsonType: "objectId",
+					description: "ObjectId from the PROPERTY collection"
+				},
+				Description: {
+					bsonType: "string",
+					maxLength: 1024,
+					description: "Product description, initially from the Product collection, may be overriden"
+				},
+			}
+		}
+	}
+});
+db.sysFilelocker.createIndex( 
+	{
+		"FileId": 1
+	}
+);
+db.sysFilelocker.createIndex( 
+	{
+		"PropertyId": 1
+	}
+);
+db.sysFilelocker.insertOne(
+	{
+		FileId: "https://s3.us-west-2.amazonaws.com/DOC-EXAMPLE-BUCKET1/red-ranger.jpg",
+		FileMeta: ["Creation, 01/02/2023", "Size, 1024000", "Type, jpg"],
+		PropertyId: ObjectId("640a1d33b856f2bbba83995c"),
+		Description:  "A Red Ford Ranger",
+#include "CommonConst.inc"
+	}
+);
+db.sysFilelocker.find();

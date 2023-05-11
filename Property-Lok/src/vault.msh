@@ -1,0 +1,93 @@
+db.vault.drop();
+db.createCollection('vault', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Files", "PropertyStatus", "Common"],
+			properties: {
+				PropertyStorageCode: {
+					bsonType: "string",
+					maxLength: 32,
+					description: "PropertyStorageCode is a one-way hash, SHA-256, 32 Hex Bytes"
+				},
+				Files: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 128,
+						description: "URLs of Files"
+					}
+				},
+				Metadata: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 128,
+						description: "Vault Metatdata"
+					}
+				},
+				Assets: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 128,
+						description: "Vault Assets"
+					}
+				},
+#include "GeoLocationDef.inc"
+				Tags: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 32,
+						description: "Array of tags"
+					}
+				},
+				PropertyStatus: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 128,
+						description: "Array of Stauses, each can contan a value/pair for Member, Company, and Admin"
+					}
+				},		
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.vault.createIndex( 
+	{
+		"PropertyStorageCode": 1
+	}
+);
+db.vault.createIndex( 
+	{
+		"Files": 1
+	}
+);
+db.vault.createIndex( 
+	{
+		"PropertyStatus": 1
+	}
+);
+db.vault.insertOne(
+	{
+		PropertyStorageCode: "HASH OF Something",
+		Files: ["file 1", "File 2" ],
+		Metadata: ["Meta 1", "Meta2"],
+		Assets: ["Asset 1", "Asset 2"],
+#include "GeoLocationConst.inc"
+		Tags: ["Tag 1", "Tag 2"],
+		PropertyStatus: [
+			"Not For Sale: Company:Yes, Member:Yes", 
+			"For Sale: Company:Yes, Member:Yes", 
+			"Lost: Company:Yes, Member:Yes", 
+			"Stolen: Company:Yes, Member:Yes"
+		], 
+#include "CommonConst.inc"
+	}
+);
+db.vault.find();
+

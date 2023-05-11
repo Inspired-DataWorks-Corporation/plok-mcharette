@@ -1,0 +1,112 @@
+db.sysCardInfo.drop();
+db.createCollection('sysCardInfo', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["MemberID", "CardNumber", "CardType", "NameOnCard", "PostalCode", "Email", "ExpirationDate", "CVV", "Common"],
+   properties: {
+    MemberId: {
+     bsonType: "objectId",
+     description: "MemberId is from the MEMBERS collection"
+    },
+    CardNumber: {
+     bsonType: "string",
+     minLength: 4,
+     maxLength: 4,
+     description: "Last 4 digits of CC is required"
+    },
+    CardType: {
+     bsonType: "string",
+     enum: ["MC","DSC", "AMEX", "PAYPAL"],
+     description: "Limited to enum"
+    },
+    NameOnCard: {
+     bsonType: "string",
+     minLength: 8,
+     maxLength: 64,
+     description: "Obviously name on card"
+    },
+    PostalCode: {
+     bsonType: "string",
+     minLength: 3,
+     maxLength: 12,
+     description: "National postal code"
+    },
+    Email: {
+     bsonType: "string",
+     maxLength: 64,
+     description: "User email - may be different than Member email"
+    },
+    ExpirationDate: {
+     bsonType: "date",
+     description: "Card expiration date"
+    },
+    CVV: {
+     bsonType: "string",
+     minLength: 3,
+     maxLength: 5,
+     description: "Card CVV"
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.sysCardInfo.createIndex(
+ {
+  "MemberId": 1
+ }
+);
+db.sysCardInfo.insertOne(
+ {
+  MemberID: ObjectId("640914943bb567d97ab19e81"),
+  CardNumber: "9645",
+  CardType: "AMEX",
+  NameOnCard: "John Doe",
+  PostalCode: "75123",
+  Email: "foo@bar.com",
+  ExpirationDate: new ISODate("2023-03-09"),
+  CVV: "1234",
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.sysCardInfo.find();

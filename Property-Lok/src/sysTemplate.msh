@@ -1,0 +1,60 @@
+db.sysTemplate.drop();
+db.createCollection('sysTemplate', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			properties: {
+				TemplateType: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 32,
+					description: "Type"
+				},
+				TemplateContent: {
+					bsonType: "string",
+					maxLength: 4096,
+					description: "Freeform text"
+				},
+				Description: {
+					bsonType: "string",
+					maxLength: 512,
+					description: "Description"
+				},
+				Keywords: {
+					bsonType: "array",
+					description: "Array of keywords",
+					items: {
+						bsonType: "string",
+						maxLength: 32,
+						description: "Keywords"
+					}
+				},
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.sysTemplate.createIndex( 
+	{
+		"Description": 1
+	},
+);
+db.sysTemplate.createIndex( 
+	{
+		"Keywords": 1
+	},
+);
+db.sysTemplate.insertOne(
+	{
+		TemplateType: "Member html",
+		TemplateContent: "A very long string",
+		Description: "Member template",
+		Keywords: ["html", "Member", "clone"],
+#include "CommonConst.inc"
+	}
+);
+db.sysTemplate.find();
+
+
+

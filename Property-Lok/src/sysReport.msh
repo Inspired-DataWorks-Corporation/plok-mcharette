@@ -1,0 +1,58 @@
+db.sysReport.drop();
+db.createCollection('sysReport', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["ReportName", "ReportType", "Description", "Common"],
+			properties: {
+				ReportName: {
+					bsonType: "string",
+					minLength: 8,
+					maxLength: 32,
+					description: "Unique name"
+				},
+				ReportType: {
+					bsonType: "string",
+					enum: ["Admin", "Metrics", "Detail"],
+					description: "Type of report. Limited to enum"	
+				},
+				Description: {
+					bsonType: "string",
+					minLength: 8,
+					maxLength: 512,
+					description: "Complete description of this report"
+				},
+				Keywords: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 2,
+						maxLength: 32
+					}
+				},
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.sysReport.createIndex( 
+	{
+		"ReportName": 1
+	},
+	{
+		unique: true
+	}
+);
+db.sysReport.insertOne(
+	{
+		ReportName: "Metrics Report 1",
+		ReportType: "Metrics",
+		Description: "Master Metrics report",
+		Keywords: ["Master", "Metrics", "Log"],
+#include "CommonConst.inc"
+	}
+);
+db.sysReport.find();
+
+

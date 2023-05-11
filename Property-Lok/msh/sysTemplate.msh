@@ -1,0 +1,95 @@
+db.sysTemplate.drop();
+db.createCollection('sysTemplate', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   properties: {
+    TemplateType: {
+     bsonType: "string",
+     minLength: 4,
+     maxLength: 32,
+     description: "Type"
+    },
+    TemplateContent: {
+     bsonType: "string",
+     maxLength: 4096,
+     description: "Freeform text"
+    },
+    Description: {
+     bsonType: "string",
+     maxLength: 512,
+     description: "Description"
+    },
+    Keywords: {
+     bsonType: "array",
+     description: "Array of keywords",
+     items: {
+      bsonType: "string",
+      maxLength: 32,
+      description: "Keywords"
+     }
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.sysTemplate.createIndex(
+ {
+  "Description": 1
+ },
+);
+db.sysTemplate.createIndex(
+ {
+  "Keywords": 1
+ },
+);
+db.sysTemplate.insertOne(
+ {
+  TemplateType: "Member html",
+  TemplateContent: "A very long string",
+  Description: "Member template",
+  Keywords: ["html", "Member", "clone"],
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.sysTemplate.find();

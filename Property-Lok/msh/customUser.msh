@@ -1,0 +1,229 @@
+db.customUser.drop();
+db.createCollection('customUser', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["Email", "Role",
+    "FirstName", "LastName", "UserName", "PoliciesAccepted", "Common", "Address"],
+   properties: {
+    Email: {
+     bsonType: "string",
+     minLength: 8,
+     maxLength: 128,
+     description: "required, unique, signin, signup"
+    },
+    CompanyName: {
+     bsonType: "string",
+     maxLength: 50,
+     minLength: 4,
+     description: "unique (CompanyName), copy of UserName if not entered, validate from ORG if not Role=ORG, signin, signup"
+    },
+    Role: {
+     bsonType: "string",
+     enum: ["Admin", "Developer", "Member", "Org", "Visitor"],
+     description: "required. Limited to enum. Default to Member. Generated at signup"
+    },
+    FirstName: {
+     bsonType: "string",
+      minLength: 3,
+     maxLength: 64,
+     description: "required, signup"
+    },
+    LastName: {
+     bsonType: "string",
+     minLength: 3,
+     maxLength: 128,
+     description: "required, signup"
+    },
+    UserName: {
+     bsonType: "string",
+     minLength: 4,
+     maxLength: 24,
+     description: "required. Must be unique, signin, signup, generated but may be overrriden"
+    },
+    Address: {
+     bsonType:"object",
+                    properties: {
+      "Street": {
+       "bsonType": "string",
+      },
+      "City": {
+       "bsonType": "string",
+      },
+      "State": {
+       "bsonType": "string",
+      },
+      "Country": {
+       "bsonType": "string",
+      },
+      "PostalCode": {
+       "bsonType": "string",
+      }
+     }
+    },
+    MobilePhoneNumber: {
+     bsonType: "string",
+     maxLength: 50,
+     description: " signup"
+    },
+    PicAvatarURL: {
+     bsonType: "string",
+     minLength: 8,
+     maxLength: 256,
+     description: "URL to avatar/pic, signup, default avater to pick"
+    },
+    EmailVerified: {
+     bsonType: "bool",
+     description: "generated"
+    },
+    SubscriptionTerm: {
+     bsonType: "string",
+     enum: ["Monthly", "Annually"],
+     description: "string and is required. Limited to enum, signup"
+    },
+    SubscriptionTermStart: {
+     bsonType: "date",
+     description: "Date and is required."
+    },
+    GeoLocation: {
+     bsonType: "array",
+     items: {
+      bsonType: "double"
+     },
+     description: "Geolocation is an array with latitude, longitude"
+    },
+    AlternateFirstname: {
+     bsonType: "string",
+      minLength: 3,
+     maxLength: 64,
+     description: "signup"
+    },
+    AlternateLastname: {
+     bsonType: "string",
+     minLength: 3,
+     maxLength: 128,
+     description: "signup"
+    },
+     AlternateEmail: {
+     bsonType: "string",
+     minLength: 8,
+     maxLength: 150,
+     description: "signup"
+    },
+    DailySearchLimit: {
+     bsonType: "int",
+     description: "integer set by the subscription associated with this member, signup"
+    },
+    PropertyRegistrationLimit: {
+     bsonType: "int",
+     description: "integer set by the subscription associated with this member, signup"
+    },
+    UsageUpchargeThreshhold: {
+     bsonType: "int",
+     description: "When to upcharge"
+    },
+    PoliciesAccepted: {
+     bsonType: "bool",
+     description: "boolean and is required, default false, signup"
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.customUser.createIndex(
+  {
+  "Email": 1
+ },
+ {
+  unique: true
+ }
+);
+db.customUser.createIndex(
+ {
+  "CompanyName": 1
+ },
+ {
+  unique: true
+ }
+);
+db.customUser.createIndex(
+ {
+  "UserName": 1
+ },
+ {
+  unique: true
+ }
+);
+db.customUser.insertOne(
+ {
+  Email: "dont@reachme.com",
+  CompanyName: "Property-Lok",
+  Role: "Member",
+  FirstName: " Mark",
+  LastName: "Charette",
+  UserName: "mcharet2",
+  Address:
+  {
+   Street: "STE 4-439, 7750 Okeechobee Blvd",
+   City: "West Palm Beach",
+   State: "Florida",
+   Country: "USA",
+   PostalCode: "33411"
+  },
+  MobilePhoneNumber: "+52 998 371 8824",
+  PicAvatarURL: "none right now",
+  EmailVerified: false,
+  SubscriptionTerm: "Annually",
+  SubscriptionTermStart: new Date(),
+  GeoLocation: [Double(20.65744), Double(-103.39393)],
+  AlternateFirstname: "kraM",
+  AlternateLastname: "etterahC",
+  AlternateEmail: "nowhere@nohow.org",
+  DailySearchLimit: 40,
+  PropertyRegistrationLimit: 20,
+  UsageUpchargeThreshold: 20,
+  PoliciesAccepted: true,
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.customUser.find();

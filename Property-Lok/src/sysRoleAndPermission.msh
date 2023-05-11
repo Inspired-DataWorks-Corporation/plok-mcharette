@@ -1,0 +1,57 @@
+db.sysRoleAndPermission.drop();
+db.createCollection('sysRoleAndPermission', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Common"],
+			properties: {
+				Created: {
+					bsonType: "date",
+					description: "Created is required"
+				},
+				CreatedBy: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 8,
+					description: "required"
+				},
+				AccountID: {
+					bsonType: "objectId",
+					description: "Not sure what this is"
+				},
+				Roles: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 128
+					}	
+				},
+				Permissions: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 128
+					}	
+				},	
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.sysRoleAndPermission.createIndex( 
+	{
+		"AccountID": 1
+	}
+);
+db.sysRoleAndPermission.insertOne(
+	{
+		AccountID: ObjectId("deadbeefdeadbeefdeadbeef"),
+		Roles: ["Role 1", "Role 2"],
+		Permissions: ["Perm1", "Perm2"],
+#include "CommonConst.inc"
+	}
+);
+db.sysRoleAndPermission.find();

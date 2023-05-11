@@ -1,0 +1,136 @@
+db.activity.drop();
+db.createCollection('activity', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "v.1.0.2 				activity Collection",
+   required: ["MemberId", "SessionId", "SessionStart", "IPAddress", "SessionEnd", "Common"],
+   properties: {
+    MemberId: {
+     bsonType: "objectId",
+     description: "MemberId from the MEMBER collection"
+    },
+    SessionId: {
+     bsonType: "string",
+     maxLength: 64,
+     description: "SessionId is the Browser session ID. Session ends with SignOff or Closing browser/tab"
+    },
+    SessionStart: {
+     bsonType: "date",
+     description: "SessionStart is Browser session start time."
+    },
+    IPAddress: {
+     bsonType: "string",
+     minLength: 8,
+     maxLength: 20,
+     description: "Store the full Class C address of the client for the session. 						Must be a string in standard IP format: xxx.xxx.xxx.xxx"
+    },
+    GeoLocation: {
+     bsonType: "array",
+     items: {
+      bsonType: "double"
+     },
+     description: "Geolocation is an array with latitude, longitude"
+    },
+    Activity: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      minLength: 4,
+      maxLength: 256
+     },
+                    description: "Activity ia an array of strings. The strings include all views, adds, edits, updates, deletes. 						Track failed sign in attempts in the session. 						Track the ORG used. 						Track all transactions. 						Add pointers to all transaction information."
+    },
+    SessionEnd: {
+     bsonType: "date",
+     description: "SessionEnd is the sign off or browser closed time. It may be set during a  forced termination"
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.activity.createIndex(
+ {
+  "MemberId": 1
+ },
+ {
+  unique: true
+ }
+);
+db.activity.createIndex(
+ {
+  "SessionId": 1
+ }
+);
+db.activity.createIndex(
+ {
+  "SessionStart": 1
+ }
+);
+db.activity.createIndex(
+ {
+  "IPAddress": 1
+ }
+);
+db.activity.createIndex(
+ {
+  "GeoLocation": 1
+ }
+);
+db.activity.createIndex(
+ {
+  "SessionEnd": 1
+ }
+);
+db.activity.insertOne(
+ {
+  MemberId: ObjectId("640914943bb567d97ab19e81"),
+  SessionId: "sess_84266fdbd31d4c2c6d0665f7e8380fa3",
+  SessionStart: new ISODate("2023-03-09T21:34:17.872Z"),
+  IPAddress: "192.168.0.127",
+  GeoLocation: [Double(20.65744), Double(-103.39393)],
+  Activity: ["Search for Red Rangers", "View property", "Forced SessionEnd"],
+  SessionEnd: new ISODate("2023-03-10T00:00:00.1Z"),
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.activity.find();

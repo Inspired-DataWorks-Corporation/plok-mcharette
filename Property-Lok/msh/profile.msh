@@ -1,0 +1,110 @@
+db.profile.drop();
+db.createCollection('profile', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["MemberId", "Common"],
+   properties: {
+    MemberId: {
+     bsonType: "objectId",
+     description: "MemberId from the MEMBER collection"
+    },
+    SendReportDetails: {
+     bsonType: "bool",
+     description: "SendReportDetails defaults true"
+    },
+    SendNotifyBuy: {
+     bsonType: "bool",
+     description: "SendNotifyBuy defaults true"
+    },
+    ReceiveReportDetails: {
+     bsonType: "bool",
+     description: "ReceiveReportDetails defaults true"
+    },
+    ReceiveNotifyBuy: {
+     bsonType: "bool",
+     description: "SendNotifyBuy defaults true"
+    },
+    ReceiveNotifySearch: {
+     bsonType: "bool",
+     description: "SendNotifyBuy defaults true"
+    },
+    ReceiveNotifyAttempts: {
+     bsonType: "bool",
+     description: "ReceivedNotifyAttempts defaults true"
+    },
+    RecoverPasswordEnable: {
+     bsonType: "bool",
+     description: "RecoverPasswordEnable defaults true"
+    },
+    LockPasswordEnable: {
+     bsonType: "bool",
+     description: "RecoverPasswordEnable defaults true"
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.profile.createIndex(
+ {
+  "MemberId": 1
+ },
+ {
+  unique: true
+ }
+);
+db.profile.insertOne(
+ {
+  MemberId: ObjectId("640914943bb567d97ab19e81"),
+  SendReportDetails: true,
+  SendNotifyBuy: true,
+  ReceiveReportDetails: true,
+  ReceiveNotifyBuy: true,
+  ReceiveNotifySearch: true,
+  ReceiveNotifyAttempts: true,
+  RecoverPasswordEnable: true,
+  LockPasswordEnable: false,
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.profile.find();

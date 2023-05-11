@@ -1,0 +1,107 @@
+db.sysMetric.drop();
+db.createCollection('sysMetric', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["Common"],
+   properties: {
+    MemberId: {
+     bsonType: "objectId",
+     description: "MemberId is from the MEMBERS collection"
+    },
+    OrgId: {
+     bsonType: "objectId",
+     description: "MemberId is from the ORG collection"
+    },
+    BySKU: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 24,
+      description: "SKU from the Product collection"
+     }
+    },
+    ByCustomer: {
+     bsonType: "array",
+     items: {
+      bsonType: "objectId",
+      description: "Customer from the Member collection"
+     }
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.sysMetric.createIndex(
+ {
+  "MemberId": 1
+ },
+ {
+  unique: true
+ }
+);
+db.sysMetric.createIndex(
+ {
+  "OrgId": 1
+ }
+);
+db.sysMetric.createIndex(
+ {
+  "BySKU": 1
+ }
+);
+db.sysMetric.createIndex(
+ {
+  "ByCustomer": 1
+ }
+);
+db.sysMetric.insertOne(
+ {
+  MemberId: ObjectId("640914943bb567d97ab19e81"),
+  OrgId: ObjectId("640b4dc17f012b8833862c62"),
+  BySKU: ["SKU1", "SKU2"],
+  ByCustomer: [ObjectId("640914943bb567d97ab19e81")],
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.sysMetric.find();

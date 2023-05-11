@@ -1,0 +1,162 @@
+db.customUser.drop();
+db.createCollection('customUser', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Email", "Role",
+				"FirstName", "LastName", "UserName", "PoliciesAccepted", "Common", "Address"],
+			properties: {
+				Email: {
+					bsonType: "string",
+					minLength: 8,
+					maxLength: 128,
+					description: "required, unique, signin, signup"
+				},
+				CompanyName: {
+					bsonType: "string",
+					maxLength: 50,
+					minLength: 4,
+					description: "unique (CompanyName), copy of UserName if not entered, validate from ORG if not Role=ORG, signin, signup"
+				},
+				Role: {
+					bsonType: "string",
+					enum: ["Admin", "Developer", "Member", "Org", "Visitor"],
+					description: "required. Limited to enum. Default to Member. Generated at signup"
+				},
+				FirstName: {
+					bsonType: "string",
+ 					minLength: 3,
+					maxLength: 64,
+					description: "required, signup"
+				},
+				LastName: {
+					bsonType: "string",
+					minLength: 3,
+					maxLength: 128,
+					description: "required, signup"
+				},
+				UserName: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 24,
+					description: "required. Must be unique, signin, signup, generated but may be overrriden"
+				},
+				Address: {
+#include "AddressDef.inc"
+				},
+				MobilePhoneNumber: {
+					bsonType: "string",
+					maxLength: 50,
+					description: " signup"
+				},
+				PicAvatarURL: {
+					bsonType: "string",
+					minLength: 8,
+					maxLength: 256,
+					description: "URL to avatar/pic, signup, default avater to pick"
+				},
+				EmailVerified: {
+					bsonType: "bool",
+					description: "generated"
+				},
+				SubscriptionTerm: {
+					bsonType: "string",
+					enum: ["Monthly", "Annually"],
+					description: "string and is required. Limited to enum, signup"
+				},
+				SubscriptionTermStart: {
+					bsonType: "date",
+					description: "Date and is required."
+				},
+#include "GeoLocationDef.inc"
+				AlternateFirstname: {
+					bsonType: "string",
+ 					minLength: 3,
+					maxLength: 64,
+					description: "signup"
+				},
+				AlternateLastname: {
+					bsonType: "string",
+					minLength: 3,
+					maxLength: 128,
+					description: "signup"
+				},
+ 				AlternateEmail: {
+					bsonType: "string",
+					minLength: 8,
+					maxLength: 150,
+					description: "signup"
+				},
+				DailySearchLimit: {
+					bsonType: "int",
+					description: "integer set by the subscription associated with this member, signup"
+				},
+				PropertyRegistrationLimit: {
+					bsonType: "int",
+					description: "integer set by the subscription associated with this member, signup"
+				},
+				UsageUpchargeThreshhold: {
+					bsonType: "int",
+					description: "When to upcharge"
+				},
+				PoliciesAccepted: {
+					bsonType: "bool",
+					description: "boolean and is required, default false, signup"
+				},
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.customUser.createIndex(
+ 	{
+		"Email": 1
+	},
+	{
+		unique: true
+	}
+);
+db.customUser.createIndex( 
+	{
+		"CompanyName": 1
+	},
+	{
+		unique: true
+	}
+);
+db.customUser.createIndex( 
+	{
+		"UserName": 1
+	},
+	{
+		unique: true
+	}
+);
+db.customUser.insertOne(
+	{	
+		Email: "dont@reachme.com",
+		CompanyName: "Property-Lok",
+		Role: "Member",
+		FirstName: " Mark",
+		LastName: "Charette",
+		UserName: "mcharet2",
+#include "AddressConst.inc"
+		MobilePhoneNumber: "+52 998 371 8824",
+		PicAvatarURL: "none right now",
+		EmailVerified: false,
+		SubscriptionTerm: "Annually",
+		SubscriptionTermStart: new Date(),
+#include "GeoLocationConst.inc"
+		AlternateFirstname: "kraM",
+		AlternateLastname: "etterahC",
+		AlternateEmail: "nowhere@nohow.org",	
+		DailySearchLimit: 40,
+		PropertyRegistrationLimit: 20,
+		UsageUpchargeThreshold: 20,
+		PoliciesAccepted: true,
+#include "CommonConst.inc"
+	}
+);
+db.customUser.find();
+

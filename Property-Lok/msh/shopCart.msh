@@ -1,0 +1,156 @@
+db.shopCart.drop();
+db.createCollection('shopCart', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["MemberId", "ProductId", "SKU",
+    "Description", "Price", "Subscription", "PaymentMethod", "Common"],
+   properties: {
+    MemberId: {
+     bsonType: "objectId",
+     description: "MemberId is from the Members collection"
+    },
+    ProductId: {
+     bsonType: "objectId",
+     description: "ProductId is from the SYSProductId collection"
+    },
+     SKU: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 24,
+      description: "SKU from the SYSProduct lookup collection"
+     }
+    },
+    Description: {
+     bsonType: "string",
+     maxLength: 512,
+     description: "Description is from the PRODUCT collection, overridable"
+    },
+    Price: {
+     bsonType: "decimal",
+     minimum: 0.0,
+     maximum: 99999.99,
+     description: "Price is required"
+    },
+    Subscription: {
+     bsonType: "string",
+     enum: ["Monthly", "Annual"],
+     description: "Subscription depends on SKU"
+    },
+    PaymentMethod: {
+     bsonType: "string",
+     enum: ["VISA", "MC", "ACH"],
+     description: "PaymentMethod is an enum and is required. Driven by Stripe"
+    },
+     ProductPic: {
+     bsonType: "string",
+     minLength: 8,
+     maxLength: 128,
+     description: "URL of product picture"
+    },
+    SubscriptionExpiryDate: {
+     bsonType: "date",
+     description: "Calculated from Transaction date and Subscription"
+    },
+    SavePaymentType: {
+     bsonType: "bool",
+     description: "SavePaymentType saves as new/updates CARD/ACH data for this member. Can Stripe do this?"
+    },
+    ProductKeywords: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 64,
+      description: "Keywords for lookup"
+     }
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.shopCart.createIndex(
+ {
+  "MemberId": 1
+ }
+);
+db.shopCart.createIndex(
+ {
+  "SKU": 1
+ },
+ {
+  unique: true
+ }
+);
+db.shopCart.createIndex(
+ {
+  "Description": 1
+ }
+);
+db.shopCart.createIndex(
+ {
+  "Price": 1
+ }
+);
+db.shopCart.createIndex(
+ {
+  "ProductKeywords": 1
+ }
+);
+db.shopCart.insertOne(
+ {
+  MemberId: ObjectId("640914943bb567d97ab19e81"),
+  ProductId: ObjectId("6409194a3bb567d97ab19e84"),
+  SKU: ["SKU1", "SKU2"],
+  Description: "Product Description",
+  Price: NumberDecimal("12345.67"),
+  Subscription: "Monthly",
+  PaymentMethod: "ACH",
+  ProductPic: "https://a secure pic",
+  SubscriptionExpiryDate: new Date(),
+  SavePaymentType: false,
+  ProductKeywords: ['ah one', 'and ah two'],
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.shopCart.find();

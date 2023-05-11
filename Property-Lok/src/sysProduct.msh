@@ -1,0 +1,57 @@
+db.sysProduct.drop();
+db.createCollection('sysProduct', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Common"],
+			properties: {
+ 				SKU: {
+					bsonType: "string",
+					maxLength: 24,
+					description: "SKU, Generated"
+				},				
+				Name: {
+					bsonType: "string",
+					maxLength: 128,
+					description: "Product name"
+				},
+				Description: {
+					bsonType: "string",
+					maxLength: 1024,
+					description: "Product description"
+				},
+				Price: {
+					bsonType: "decimal",
+					minimum: 0.0,
+					maximum: 99999.99,
+					description: "Price must be a decimal"
+				},
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.sysProduct.createIndex( 
+	{
+		"SKU": 1
+	},
+	{
+		unique: true
+	}
+);
+db.sysProduct.createIndex( 
+	{
+		"Name": 1
+	}
+);
+db.sysProduct.insertOne(
+	{
+		SKU: "SKU1",
+		ProductName: "A Product",
+		Description: "A Red Ford Ranger",
+		Price: NumberDecimal("9999.99"),
+#include "CommonConst.inc"
+	}
+);
+db.sysProduct.find();

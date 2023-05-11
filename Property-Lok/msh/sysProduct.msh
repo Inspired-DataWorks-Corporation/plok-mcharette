@@ -1,0 +1,95 @@
+db.sysProduct.drop();
+db.createCollection('sysProduct', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["Common"],
+   properties: {
+     SKU: {
+     bsonType: "string",
+     maxLength: 24,
+     description: "SKU, Generated"
+    },
+    Name: {
+     bsonType: "string",
+     maxLength: 128,
+     description: "Product name"
+    },
+    Description: {
+     bsonType: "string",
+     maxLength: 1024,
+     description: "Product description"
+    },
+    Price: {
+     bsonType: "decimal",
+     minimum: 0.0,
+     maximum: 99999.99,
+     description: "Price must be a decimal"
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.sysProduct.createIndex(
+ {
+  "SKU": 1
+ },
+ {
+  unique: true
+ }
+);
+db.sysProduct.createIndex(
+ {
+  "Name": 1
+ }
+);
+db.sysProduct.insertOne(
+ {
+  SKU: "SKU1",
+  ProductName: "A Product",
+  Description: "A Red Ford Ranger",
+  Price: NumberDecimal("9999.99"),
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.sysProduct.find();

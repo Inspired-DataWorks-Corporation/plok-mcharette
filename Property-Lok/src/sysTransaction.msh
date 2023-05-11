@@ -1,0 +1,57 @@
+db.sysTransaction.drop();
+db.createCollection('sysTransaction', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Common"],
+			properties: {
+				MemberId: {
+					bsonType: "objectId",
+					description: "MemberId is from the MEMBERS collection"
+				},
+				TransactionType: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 32,
+					description: "Type of transaction"
+				},
+				ProductID: {
+					bsonType: "array",
+					items: {
+						bsonType: "objectId"
+					}
+				},
+				Amount: {
+					bsonType: "decimal",
+					minimum: 0.0,
+					maximum: 99999.99,
+					description: "Amount of transaction"
+				},
+				PaymentStatus: {
+					bsonType: "string",
+					enum: ["Not Paid", "Partial Payment", "Waiting for Approval", "Completed"],
+					description: "PaymentStatus is limited to enum"
+				},
+#include "CommonDef.inc"
+			}
+		}
+	}
+})
+db.sysTransaction.createIndex( 
+	{
+		"MemberId": 1
+	}
+);
+db.sysTransaction.insertOne(
+	{
+		MemberId: ObjectId("deadbeefdeadbeefdeadbeef"),
+		TransactionType: "Membership",
+		ProductID: [ObjectId("deadbeefdeadbeefdeadbeeb"), ObjectId("aeadbeefdeadbeefdeadbeef")],
+		Amount: NumberDecimal("12345.67"),
+		PaymentStatus: "Not Paid",
+#include "CommonConst.inc"
+	}
+);
+db.sysTransaction.find();
+

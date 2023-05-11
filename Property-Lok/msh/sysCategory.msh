@@ -1,0 +1,75 @@
+db.sysCategory.drop();
+db.createCollection('sysCategory', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["Common"],
+   properties: {
+    Categories: {
+     bsonType: "array",
+     items: {
+      bsonType: "string"
+     }
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.sysCategory.insertOne(
+ {
+  Categories: [
+   "Art",
+   "Paintings",
+   "Sculpture",
+   "Ceramic",
+   "Metal",
+   "Watercolor",
+   "Glass",
+   "Canvas",
+   "Wood",
+   "Oil"
+  ],
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.sysCategory.find();

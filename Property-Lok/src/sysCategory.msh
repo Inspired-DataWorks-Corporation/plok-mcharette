@@ -1,0 +1,26 @@
+db.sysCategory.drop();
+db.createCollection('sysCategory', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Common"],
+			properties: {
+				Categories: {
+					bsonType: "array",
+					items: {
+						bsonType: "string"
+					}
+				},
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.sysCategory.insertOne(
+	{
+#include "Categories.inc"
+#include "CommonConst.inc"
+	}
+);
+db.sysCategory.find();

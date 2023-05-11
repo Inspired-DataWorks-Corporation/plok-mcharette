@@ -1,0 +1,136 @@
+db.vault.drop();
+db.createCollection('vault', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["Files", "PropertyStatus", "Common"],
+   properties: {
+    PropertyStorageCode: {
+     bsonType: "string",
+     maxLength: 32,
+     description: "PropertyStorageCode is a one-way hash, SHA-256, 32 Hex Bytes"
+    },
+    Files: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 128,
+      description: "URLs of Files"
+     }
+    },
+    Metadata: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 128,
+      description: "Vault Metatdata"
+     }
+    },
+    Assets: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 128,
+      description: "Vault Assets"
+     }
+    },
+    GeoLocation: {
+     bsonType: "array",
+     items: {
+      bsonType: "double"
+     },
+     description: "Geolocation is an array with latitude, longitude"
+    },
+    Tags: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 32,
+      description: "Array of tags"
+     }
+    },
+    PropertyStatus: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 128,
+      description: "Array of Stauses, each can contan a value/pair for Member, Company, and Admin"
+     }
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.vault.createIndex(
+ {
+  "PropertyStorageCode": 1
+ }
+);
+db.vault.createIndex(
+ {
+  "Files": 1
+ }
+);
+db.vault.createIndex(
+ {
+  "PropertyStatus": 1
+ }
+);
+db.vault.insertOne(
+ {
+  PropertyStorageCode: "HASH OF Something",
+  Files: ["file 1", "File 2" ],
+  Metadata: ["Meta 1", "Meta2"],
+  Assets: ["Asset 1", "Asset 2"],
+  GeoLocation: [Double(20.65744), Double(-103.39393)],
+  Tags: ["Tag 1", "Tag 2"],
+  PropertyStatus: [
+   "Not For Sale: Company:Yes, Member:Yes",
+   "For Sale: Company:Yes, Member:Yes",
+   "Lost: Company:Yes, Member:Yes",
+   "Stolen: Company:Yes, Member:Yes"
+  ],
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.vault.find();

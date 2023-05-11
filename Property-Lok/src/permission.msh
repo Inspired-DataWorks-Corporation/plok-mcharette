@@ -1,0 +1,180 @@
+db.permission.drop();
+db.createCollection('permission', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Role", "Admin", "Developer", "Member", "Visitor", "Pawnshop", "LawEnforcement", "Common"],
+			properties: {
+				Role: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						enum: ["Admin", "Developer", "Member", "Org", "Visitor"],
+						description: "Role must be a enum, comes standard, editable"
+					}
+				},
+				Admin: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 40,
+						description: "Permission/Value pair, comma separated, comes standard, editable"
+					}
+				},
+				Developer: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 40,
+						description: "Permission/Value pair, comma separated, comes standard, editable"
+					}
+				},
+				Member: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 40,
+						description: "Permission/Value pair, comma separated, comes standard, editable"
+					}
+				},
+				Company: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 40,
+						description: "Permission/Value pair, comma separated, comes standard, editable"
+					}
+				},	
+				Pawnshop: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 40,
+						description: "Permission/Value pair, comma separated, comes standard, editable"
+					}
+				},
+				LawEnforcement: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 40,
+						description: "Permission/Value pair, comma separated, comes standard, editable"
+					}
+				},
+				Visitor: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 40,
+						description: "Permission/Value pair, comma separated, comes standard, editable"
+					}
+				},
+
+				//
+				// Addional types can be added
+				//
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.permission.insertOne(
+	{
+		Role: ["Admin", "Developer", "Member", "Org", "Visitor"],
+		Admin: 
+			[
+				"Vault Read, Yes", 
+				"Vault Write, Yes",
+				"Vault List Export/ Print, Yes",
+				"Receive Notify Search, Yes",
+				"Receive Notify Search, Yes",
+				"Receive Notify Attempts, Yes",
+				"View List of Stolen Property, Yes",
+				"Report/Print/Export List, Yes",
+				"Admin Settings, Yes"
+			],
+		Developer: 
+			[
+				"Vault Read, Yes", 
+				"Vault Write, Yes",
+				"Vault List Export/ Print, Yes",
+				"Receive Notify Search, Yes",
+				"Receive Notify Search, Yes",
+				"Receive Notify Attempts, Yes",
+				"View List of Stolen Property, Yes",
+				"Report/Print/Export List, Yes",
+				"Admin Settings, No"
+			],
+		Member: 
+			[
+				"Vault Read, Yes", 
+				"Vault Write, Yes",
+				"Vault List Export/ Print, Yes",
+				"Receive Notify Search, Yes",
+				"Receive Notify Search, Yes",
+				"Receive Notify Attempts, Yes",
+				"View List of Stolen Property, Yes",
+				"Report/Print/Export List, Yes",
+				"Admin Settings, No"
+			],
+		Company:  
+			[
+				"Vault Read, Yes", 
+				"Vault Write, No",
+				"Vault List Export/ Print, Yes",
+				"Receive Notify Search, Yes",
+				"Receive Notify Search, Yes",
+				"Receive Notify Attempts, Yes",
+				"View List of Stolen Property, Yes",
+				"Report/Print/Export List, Yes",
+				"Admin Settings, No"
+			],
+		LawEnforcement:  
+			[
+				"Vault Read, Yes", 
+				"Vault Write, No",
+				"Vault List Export/ Print, Yes",
+				"Receive Notify Search, No",
+				"Receive Notify Search, No",
+				"Receive Notify Attempts, No",
+				"View List of Stolen Property, No",
+				"Report/Print/Export List, Yes",
+				"Admin Settings, No"
+			],
+		Pawnshop:  
+			[
+				"Vault Read, Yes", 
+				"Vault Write, No",
+				"Vault List Export/ Print, Yes",
+				"Receive Notify Search, No",
+				"Receive Notify Search, No",
+				"Receive Notify Attempts, No",
+				"View List of Stolen Property, No",
+				"Report/Print/Export List, Yes",
+				"Admin Settings, No"
+			],
+		Visitor:  
+			[
+				"Vault Read, Yes", 
+				"Vault Write, No",
+				"Vault List Export/ Print, No",
+				"Receive Notify Search, No",
+				"Receive Notify Search, No",
+				"Receive Notify Attempts, No",
+				"View List of Stolen Property, No",
+				"Report/Print/Export List, No",
+				"Admin Settings, No"
+			],
+		// More here when defined
+#include "CommonConst.inc"
+	}
+);
+db.permission.find();

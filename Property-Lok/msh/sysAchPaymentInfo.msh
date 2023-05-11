@@ -1,0 +1,92 @@
+db.sysAchPaymentInfo.drop();
+db.createCollection('sysAchPaymentInfo', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version 1.2.4",
+   required: ["Stripe_PayPal", "MerchantAccount", "BankSettings", "Common"],
+   properties: {
+    Stripe_PayPal: {
+     bsonType: "string",
+     enum: ["Stripe", "PayPal"],
+     description: "Payment source type"
+    },
+    MerchantAccount: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 128,
+      description: "CSV Bank, account number"
+     }
+    },
+    BankSettings: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      maxLength: 512,
+      description: "CSV Bank, Settings"
+     }
+    },
+    BrandSettings: {
+     bsonType: "array",
+     items: {
+       bsonType: "string",
+       maxLength: 512,
+       description: "CSV Brand Name, Settings"
+      },
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.sysAchPaymentInfo.insertOne(
+ {
+  Stripe_PayPal: "Stripe",
+  MerchantAccount: ["Chase, 10249023112", "Bank of America, 123098456765"],
+  BankSettings: ["Chase, www.chase.com/login, <userid>, <password>",
+   "Bank of America, www.boa.com/login,  <userid>, <password>"],
+  BrandSettings: ["Brand setting1, red", "Brand Setting2, 4door"],
+  Created: new Date(),
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.sysAchPaymentInfo.find();

@@ -1,0 +1,46 @@
+db.sysSetting.drop();
+db.createCollection('sysSetting', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			required: ["Common"],
+			properties: {
+				BackOffice: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 1204,
+						description: "backoffice identifiers"
+					}
+				},
+				SMTP: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 1024,
+						description: "CSV SMTP connect data"
+					}
+				},
+				SMS: {
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						maxLength: 1024,
+						description: "CSV SMS connect data"
+					}
+				},
+#include "CommonDef.inc"
+			}
+		}
+	}
+})
+db.sysSetting.insertOne(
+	{
+		BackOffice: ["Office setting 1", "Office Setting 2"],
+		SMTP: ["SMTP 1", "SMTP 2"],
+		SMS: ["SMS1", "SMS2"],
+#include "CommonConst.inc"
+	}
+);
+db.sysSetting.find();
