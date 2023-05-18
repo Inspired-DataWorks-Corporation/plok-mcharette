@@ -5,7 +5,7 @@ db.createCollection('shopCart', {
 			bsonType: "object",
 			description: QUOTE(VERSION),
 			required: ["MemberId", "ProductId", "SKU",
-				"Description", "Price", "Subscription", "PaymentMethod", "Common"],
+				"Description", "Price", "PaymentMethod", "Common"],
 			properties: {
 				MemberId: {
 					bsonType: "objectId",
@@ -19,7 +19,7 @@ db.createCollection('shopCart', {
 					bsonType: "array",
 					items: {
 						bsonType: "string",
-						maxLength: 24,
+						maxLength: 128,
 						description: "SKU from the SYSProduct lookup collection"
 					}
 				},				
@@ -34,11 +34,6 @@ db.createCollection('shopCart', {
 					maximum: 99999.99,
 					description: "Price is required"
 				},
-				Subscription: {
-					bsonType: "string",
-					enum: ["Monthly", "Annual"],
-					description: "Subscription depends on SKU"
-				},
 				PaymentMethod: {
 					bsonType: "string",
 					enum: ["VISA", "MC", "ACH"],
@@ -50,19 +45,10 @@ db.createCollection('shopCart', {
 					maxLength: 128,
 					description: "URL of product picture"
 				},
-				SubscriptionExpiryDate: {
-					bsonType: "date",
-					description: "Calculated from Transaction date and Subscription"
-				},
-				SavePaymentType: {
-					bsonType: "bool",
-					description: "SavePaymentType saves as new/updates CARD/ACH data for this member. Can Stripe do this?"
-				},
 				ProductKeywords: {
 					bsonType: "array",
 					items: {
 						bsonType: "string",
-						maxLength: 64,
 						description: "Keywords for lookup"
 					}
 				},
@@ -86,16 +72,6 @@ db.shopCart.createIndex(
 );
 db.shopCart.createIndex( 
 	{
-		"Description": 1
-	}
-);
-db.shopCart.createIndex( 
-	{
-		"Price": 1
-	}
-);
-db.shopCart.createIndex( 
-	{
 		"ProductKeywords": 1
 	}
 );
@@ -106,12 +82,8 @@ db.shopCart.insertOne(
 		SKU: ["SKU1", "SKU2"],
 		Description: "Product Description",
 		Price: NumberDecimal("12345.67"),
-		Subscription: "Monthly",
 		PaymentMethod: "ACH",
 		ProductPic: "https://a secure pic",
-		// next date is computer as today + subscription length
-		SubscriptionExpiryDate: new Date(),
-		SavePaymentType: false,
 		ProductKeywords: ['ah one', 'and ah two'],
 #include "CommonConst.inc"
 	}
