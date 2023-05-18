@@ -44,13 +44,13 @@ db.createCollection('org', {
 				},
 				OwnerFirstname: {
 					bsonType: "string",
- 					minLength: 3,
+ 					minLength: 2,
 					maxLength: 64,
 					description: "OwnerFirstname is required. Default rom MemberId"
 				},
 				OwnerLastname: {
 					bsonType: "string",
-					minLength: 3,
+					minLength: 2,
 					maxLength: 128,
 					description: "OwnerLastname is required. Default from MemberId"
 				},
@@ -61,7 +61,10 @@ db.createCollection('org', {
 					description: "OwnerEmail is required. Default from MemberId"
 				},
 				CompanyAddress: {
-#include "AddressArrayDef.inc"
+					bsonType: "array",
+					items: {
+						bsonType: "string"
+					}
 				},
 				CompanyMembers: {
 					bsonType: "array",
@@ -74,7 +77,7 @@ db.createCollection('org', {
 					bsonType: "array",
 					items: {
 						bsonType: "string"
-						},
+					},
 					description: "CompanyLocations is for multiple locatiosn such as states, cities"
 				},
 				CompanyDescription: {
@@ -86,7 +89,7 @@ db.createCollection('org', {
 					},
 					description: "array of strings with descriptions and/or tags",
 				},
-				Template: {
+				TemplateCss: {
 					bsonType: "string",
 					enum: ["Member", "Commercial", "Pawn Shop", "Law Enforcement"],
 					description: "Template is limited to enum"
@@ -100,34 +103,6 @@ db.org.createIndex(
 	{
 		"MemberId": 1
 	}, 
-);
-db.org.createIndex( 
-	{
-		"CompanyName": 1
-	}, 
-	{
-		unique: true
-	}
-);
-db.org.createIndex( 
-	{
-		"CompanyWebsiteURL": 1
-	}
-);
-db.org.createIndex( 
-	{
-		"CompanyAlias": 1
-	}
-);
-db.org.createIndex( 
-	{
-		"CompanyLocations": 1
-	}
-);
-db.org.createIndex( 
-	{
-		"CompanyDescription": 1
-	}
 );
 db.org.insertOne(
 	{
