@@ -1,7 +1,5 @@
 				GeoLocation: {
-					bsonType: "array",
-					items: {
-						bsonType: "double"
-					},
-					description: "Geolocation is an array with latitude, longitude"
+					bsonType: "string",
+					maxLength: 128
+					description: "Geolocation is a string with latitude, longitude"
 				},
