@@ -4,88 +4,96 @@ db.createCollection('vault', {
 		$jsonSchema: {
 			bsonType: "object",
 			description: QUOTE(VERSION),
-			required: ["Files", "PropertyStatus", "Common"],
+			required: ["PropertyStorageCode", "Files", "Metadata", "Thumbnails", "Geolocation", "Tags", 
+				"aPropertyStatus", "PurchaseDateLocation", "AppraisalOrPurchasePrice", "PropertyStatus", 
+				"salesReceiptURL", "Common"],
 			properties: {
 				PropertyStorageCode: {
 					bsonType: "string",
-					maxLength: 32,
-					description: "PropertyStorageCode is a one-way hash, SHA-256, 32 Hex Bytes"
+					minLength: 4,
+					maxLength: 128,
+					description: "PropertyStorageCode is a child of the myproperty collection PSC value generated there"
 				},
 				Files: {
 					bsonType: "array",
 					items: {
 						bsonType: "string",
-						maxLength: 128,
-						description: "URLs of Files"
+						minLength: 4,
+						maxLength: 512,
+						description: "URLs of this vaults asset Files in S3 bucket"
 					}
 				},
 				Metadata: {
 					bsonType: "array",
 					items: {
 						bsonType: "string",
-						maxLength: 128,
-						description: "Vault Metatdata"
+						minLength: 4,
+						maxLength: 512,
+						description: "File Metadata array - join with Files array above ^^"
 					}
 				},
-				Assets: {
+				Thumbnails: {
 					bsonType: "array",
 					items: {
 						bsonType: "string",
-						maxLength: 128,
-						description: "Vault Assets"
+						minLength: 4,
+						maxLength: 512,
+						description: "Vault Assets - Thumbnail Pics, Certificates, etc. Defaulted to an image representing the file type, but users can also upload their own images with the file"
 					}
 				},
-#include "GeoLocationDef.inc"
+#include "GeoLocationDef.inc"	
 				Tags: {
 					bsonType: "array",
 					items: {
 						bsonType: "string",
-						maxLength: 32,
+						minLength: 4,
+						maxLength: 512,
 						description: "Array of tags"
 					}
 				},
-				PropertyStatus: {
-					bsonType: "array",
-					items: {
-						bsonType: "string",
-						maxLength: 128,
-						description: "Array of Stauses, each can contan a value/pair for Member, Company, and Admin"
-					}
+				aPropertyStatus: {
+					bsonType: "string",
+					enum: ["Stored", "For Sale", "Lost","Stolen","Recovered"],
+					description: "aPropertyStatus is required Limited to enum"
 				},		
+				PurchaseDateLocation: {
+					bsonType: "string",
+					maxLength: 64,
+				},
+				AppraisalOrPurchasePrice: {
+					bsonType: "number",
+					minimum: 0.0,
+					maximum: 999999.99
+				},
+				PropertyStatus: {
+					bsonType: "string",
+					enum: ["Stored", "Lost", "Stolen", "For Sale", "Transferred", "Recovered", "Unrecovered"],
+					description: "aPropertyStatus is required Limited to enum"
+				},		
+				SalesReceptURL: {
+					bsonType: "string",
+					minLength: 8,
+					maxLength: 128
+				},
 #include "CommonDef.inc"
 			}
 		}
 	}
 });
-db.vault.createIndex( 
-	{
-		"PropertyStorageCode": 1
-	}
-);
-db.vault.createIndex( 
-	{
-		"Files": 1
-	}
-);
-db.vault.createIndex( 
-	{
-		"PropertyStatus": 1
-	}
-);
+
 db.vault.insertOne(
 	{
 		PropertyStorageCode: "HASH OF Something",
 		Files: ["file 1", "File 2" ],
 		Metadata: ["Meta 1", "Meta2"],
-		Assets: ["Asset 1", "Asset 2"],
+		Thumbnails: ["thumb1", "thumb2"],
 #include "GeoLocationConst.inc"
 		Tags: ["Tag 1", "Tag 2"],
-		PropertyStatus: [
-			"Not For Sale: Company:Yes, Member:Yes", 
-			"For Sale: Company:Yes, Member:Yes", 
-			"Lost: Company:Yes, Member:Yes", 
-			"Stolen: Company:Yes, Member:Yes"
-		], 
+		aPropertyStatus: "Lost",
+		PurchaseDateLocation: "5/2/22 at home",
+		AppraisalOrPurchasePrice: 50000,
+		PropertyStatus: "Stored",
+		salesReceiptURL: "a valid URL",
 #include "CommonConst.inc"
 	}
 );

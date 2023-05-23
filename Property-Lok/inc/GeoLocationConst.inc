@@ -1,1 +1,1 @@
-		GeoLocation: [Double(20.65744), Double(-103.39393)],
+		Geolocation: "20.65744, -103.39393",
