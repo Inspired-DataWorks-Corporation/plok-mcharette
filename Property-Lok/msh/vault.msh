@@ -4,9 +4,8 @@ db.createCollection('vault', {
   $jsonSchema: {
    bsonType: "object",
    description: "version 23/05/2023",
-   required: ["PropertyStorageCode", "Files", "Metadata", "Thumbnails", "Geolocation", "Tags",
-    "aPropertyStatus", "PurchaseDateLocation", "AppraisalOrPurchasePrice", "PropertyStatus",
-    "salesReceiptURL", "Common"],
+   required: ["PropertyStorageCode", "Files", "Metadata", "Thumbnails", "Geolocation",
+    "aPropertyStatus", "PropertyStatus", "Common"],
    properties: {
     PropertyStorageCode: {
      bsonType: "string",
