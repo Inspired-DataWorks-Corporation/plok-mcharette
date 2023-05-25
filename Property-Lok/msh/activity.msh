@@ -25,12 +25,10 @@ db.createCollection('activity', {
      maxLength: 20,
      description: "Store the full Class C address of the client for the session. 						Must be a string in standard IP format: xxx.xxx.xxx.xxx"
     },
-    GeoLocation: {
-     bsonType: "array",
-     items: {
-      bsonType: "double"
-     },
-     description: "Geolocation is an array with latitude, longitude"
+    Geolocation: {
+     bsonType: "string",
+     maxLength: 128,
+     description: "Geolocation is the location of the property when created and string formatted as latitude, longitude: One for each vault."
     },
     Activity: {
      bsonType: "array",
@@ -119,7 +117,7 @@ db.activity.insertOne(
   SessionId: "sess_84266fdbd31d4c2c6d0665f7e8380fa3",
   SessionStart: new ISODate("2023-03-09T21:34:17.872Z"),
   IPAddress: "192.168.0.127",
-  GeoLocation: [Double(20.65744), Double(-103.39393)],
+  Geolocation: "20.65744, -103.39393",
   Activity: ["Search for Red Rangers", "View property", "Forced SessionEnd"],
   SessionEnd: new ISODate("2023-03-10T00:00:00.1Z"),
   Common:
