@@ -11,7 +11,7 @@ db.createCollection('myProperty', {
 					bsonType: "string",
 					minLength: 4,
 					maxLength: 64,
-					description: "Property Locker holds many vaults"
+					description: "Property Locker holds many vaults. PropertyLockerName HAS to BE unique"
 				},
 				PropertyLockerDescription: {
 					bsonType: "string",
@@ -23,7 +23,7 @@ db.createCollection('myProperty', {
 					bsonType: "string",
 					minLength: 5,
 					maxLength: 512,
-					description: "Property Locker Thumbnail"
+					description: "Property Locker Thumbnail URL"
 				},
 				PropertyLockerTags: {
 					bsonType: "array",
@@ -53,7 +53,16 @@ db.createCollection('myProperty', {
 	}
 });
 
-db.property.insertOne(
+db.myProperty.createIndex( 
+	{
+		"PropertyLockerName": 1
+	},
+	{
+		unique: true
+	}
+);
+
+db.myProperty.insertOne(
 	{
 		PropertyLockerName: "A property locker",
 		PropertyLockerDescription: "Property locker description",
@@ -64,4 +73,4 @@ db.property.insertOne(
 #include "CommonConst.inc"
 	}
 );
-db.property.find();
+db.myProperty.find();
