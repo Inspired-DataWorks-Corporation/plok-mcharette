@@ -3,9 +3,9 @@ db.createCollection('org', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version 1.2.4",
+   description: "version \"Thu May 25 09:26:31 2023\"",
    required: ["MemberId", "CompanyName", "CompanyType", "BrandLogoURL",
-    "OwnerFirstname", "OwnerLastname", "OwnerEmail", "CompanyAddress", "Common"],
+    "OwnerEmail", "CompanyAddress", "Common"],
    properties: {
     MemberId: {
      bsonType: "objectId",
@@ -30,6 +30,7 @@ db.createCollection('org', {
     },
     CompanyWebsiteURL: {
      bsonType: "string",
+     minLength: 4,
      maxLength: 128,
      description: "CompanyWebsiteURL must be a valid URI string. Needs further validation"
     },
@@ -44,13 +45,13 @@ db.createCollection('org', {
     },
     OwnerFirstname: {
      bsonType: "string",
-      minLength: 3,
+      minLength: 2,
      maxLength: 64,
      description: "OwnerFirstname is required. Default rom MemberId"
     },
     OwnerLastname: {
      bsonType: "string",
-     minLength: 3,
+     minLength: 2,
      maxLength: 128,
      description: "OwnerLastname is required. Default from MemberId"
     },
@@ -63,38 +64,23 @@ db.createCollection('org', {
     CompanyAddress: {
      bsonType: "array",
      items: {
-     bsonType:"object",
-                    properties: {
-      "Street": {
-       "bsonType": "string",
-      },
-      "City": {
-       "bsonType": "string",
-      },
-      "State": {
-       "bsonType": "string",
-      },
-      "Country": {
-       "bsonType": "string",
-      },
-      "PostalCode": {
-       "bsonType": "string",
-      }
-     }
+      bsonType: "string"
      }
     },
     CompanyMembers: {
      bsonType: "array",
      items: {
-      bsonType: "objectId"
+      bsonType: "string"
      },
      description: "array of MemberIds - members of this Company",
     },
     CompanyLocations: {
      bsonType: "array",
      items: {
-      bsonType: "string"
-      },
+      bsonType: "string",
+      minLength: 4,
+      maxLength: 512
+     },
      description: "CompanyLocations is for multiple locatiosn such as states, cities"
     },
     CompanyDescription: {
@@ -106,7 +92,7 @@ db.createCollection('org', {
      },
      description: "array of strings with descriptions and/or tags",
     },
-    Template: {
+    TemplateCss: {
      bsonType: "string",
      enum: ["Member", "Commercial", "Pawn Shop", "Law Enforcement"],
      description: "Template is limited to enum"
@@ -151,34 +137,6 @@ db.org.createIndex(
   "MemberId": 1
  },
 );
-db.org.createIndex(
- {
-  "CompanyName": 1
- },
- {
-  unique: true
- }
-);
-db.org.createIndex(
- {
-  "CompanyWebsiteURL": 1
- }
-);
-db.org.createIndex(
- {
-  "CompanyAlias": 1
- }
-);
-db.org.createIndex(
- {
-  "CompanyLocations": 1
- }
-);
-db.org.createIndex(
- {
-  "CompanyDescription": 1
- }
-);
 db.org.insertOne(
  {
   MemberId: ObjectId("640914943bb567d97ab19e81"),
@@ -190,26 +148,11 @@ db.org.insertOne(
   OwnerFirstname: " Mark",
   OwnerLastname: "Charette",
   OwnerEmail: "dont@reachme.com",
-  CompanyAddress: [
-   {
-    Street: "STE 4-439, 7750 Okeechobee Blvd",
-    City: "West Palm Beach",
-    State: "Florida",
-    Country: "USA",
-    PostalCode: "33411"
-   },
-   {
-    Street: "12 de dicembre 28148",
-    City: "Guadalajara",
-    State: "Jalisco",
-    Country: "Mexico",
-    PostalCode: "111111"
-   }
-  ],
-  CompanyMembers: [ObjectId("640914943bb567d97ab19e81")],
+  CompanyAddress: ["Address 1", "Address 2"],
+  CompanyMembers: ["640914943bb567d97ab19e81"],
   CompanyLocations: ["Boston, MA", "Vancouver, WA"],
   CompanyDescription: ["Dummy description1", "Dummy description2"],
-  Template: "Member",
+  TemplateCss: "Member",
   Common:
   {
    Created: "",

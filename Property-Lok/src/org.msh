@@ -5,7 +5,7 @@ db.createCollection('org', {
 			bsonType: "object",
 			description: QUOTE(VERSION),
 			required: ["MemberId", "CompanyName", "CompanyType", "BrandLogoURL",
-				"OwnerFirstname", "OwnerLastname", "OwnerEmail", "CompanyAddress", "Common"],
+				"OwnerEmail", "CompanyAddress", "Common"],
 			properties: {
 				MemberId: {
 					bsonType: "objectId",
@@ -30,6 +30,7 @@ db.createCollection('org', {
 				},
 				CompanyWebsiteURL: {
 					bsonType: "string",
+					minLength: 4,
 					maxLength: 128,
 					description: "CompanyWebsiteURL must be a valid URI string. Needs further validation"
 				},
@@ -69,14 +70,16 @@ db.createCollection('org', {
 				CompanyMembers: {
 					bsonType: "array",
 					items: {
-						bsonType: "objectId"
+						bsonType: "string"
 					},
 					description: "array of MemberIds - members of this Company",
 				},
 				CompanyLocations: {
 					bsonType: "array",
 					items: {
-						bsonType: "string"
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 512
 					},
 					description: "CompanyLocations is for multiple locatiosn such as states, cities"
 				},
@@ -115,13 +118,11 @@ db.org.insertOne(
 		OwnerFirstname: " Mark",
 		OwnerLastname: "Charette",
 		OwnerEmail: "dont@reachme.com",
-		CompanyAddress: [
-#include "AddressArrayConst.inc"
-		],
-		CompanyMembers: [ObjectId("640914943bb567d97ab19e81")],
+		CompanyAddress: ["Address 1", "Address 2"],
+		CompanyMembers: ["640914943bb567d97ab19e81"],
 		CompanyLocations: ["Boston, MA", "Vancouver, WA"],
 		CompanyDescription: ["Dummy description1", "Dummy description2"],
-		Template: "Member",
+		TemplateCss: "Member",
 #include "CommonConst.inc"
 	}
 );
