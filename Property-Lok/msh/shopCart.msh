@@ -3,23 +3,22 @@ db.createCollection('shopCart', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version 1.2.4",
-   required: ["MemberId", "ProductId", "SKU",
-    "Description", "Price", "Subscription", "PaymentMethod", "Common"],
+   description: "version \"Thu May 25 09:49:17 2023\"",
+   required: ["MemberId", "ProductId", "SKU", "Description", "Price", "PaymentMethod", "Common"],
    properties: {
     MemberId: {
-     bsonType: "objectId",
+     bsonType: "string",
      description: "MemberId is from the Members collection"
     },
     ProductId: {
-     bsonType: "objectId",
+     bsonType: "string",
      description: "ProductId is from the SYSProductId collection"
     },
      SKU: {
      bsonType: "array",
      items: {
       bsonType: "string",
-      maxLength: 24,
+      maxLength: 128,
       description: "SKU from the SYSProduct lookup collection"
      }
     },
@@ -29,15 +28,10 @@ db.createCollection('shopCart', {
      description: "Description is from the PRODUCT collection, overridable"
     },
     Price: {
-     bsonType: "decimal",
+     bsonType: "number",
      minimum: 0.0,
      maximum: 99999.99,
      description: "Price is required"
-    },
-    Subscription: {
-     bsonType: "string",
-     enum: ["Monthly", "Annual"],
-     description: "Subscription depends on SKU"
     },
     PaymentMethod: {
      bsonType: "string",
@@ -50,19 +44,10 @@ db.createCollection('shopCart', {
      maxLength: 128,
      description: "URL of product picture"
     },
-    SubscriptionExpiryDate: {
-     bsonType: "date",
-     description: "Calculated from Transaction date and Subscription"
-    },
-    SavePaymentType: {
-     bsonType: "bool",
-     description: "SavePaymentType saves as new/updates CARD/ACH data for this member. Can Stripe do this?"
-    },
     ProductKeywords: {
      bsonType: "array",
      items: {
       bsonType: "string",
-      maxLength: 64,
       description: "Keywords for lookup"
      }
     },
@@ -101,46 +86,15 @@ db.createCollection('shopCart', {
   }
  }
 });
-db.shopCart.createIndex(
- {
-  "MemberId": 1
- }
-);
-db.shopCart.createIndex(
- {
-  "SKU": 1
- },
- {
-  unique: true
- }
-);
-db.shopCart.createIndex(
- {
-  "Description": 1
- }
-);
-db.shopCart.createIndex(
- {
-  "Price": 1
- }
-);
-db.shopCart.createIndex(
- {
-  "ProductKeywords": 1
- }
-);
 db.shopCart.insertOne(
  {
-  MemberId: ObjectId("640914943bb567d97ab19e81"),
-  ProductId: ObjectId("6409194a3bb567d97ab19e84"),
+  MemberId: "640914943bb567d97ab19e81",
+  ProductId: "6409194a3bb567d97ab19e84",
   SKU: ["SKU1", "SKU2"],
   Description: "Product Description",
-  Price: NumberDecimal("12345.67"),
-  Subscription: "Monthly",
+  Price: 12345.67,
   PaymentMethod: "ACH",
   ProductPic: "https://a secure pic",
-  SubscriptionExpiryDate: new Date(),
-  SavePaymentType: false,
   ProductKeywords: ['ah one', 'and ah two'],
   Common:
   {

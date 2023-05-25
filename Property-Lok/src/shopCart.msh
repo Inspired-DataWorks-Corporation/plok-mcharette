@@ -4,15 +4,14 @@ db.createCollection('shopCart', {
 		$jsonSchema: {
 			bsonType: "object",
 			description: QUOTE(VERSION),
-			required: ["MemberId", "ProductId", "SKU",
-				"Description", "Price", "PaymentMethod", "Common"],
+			required: ["MemberId", "ProductId", "SKU", "Description", "Price", "PaymentMethod", "Common"],
 			properties: {
 				MemberId: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "MemberId is from the Members collection"
 				},
 				ProductId: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "ProductId is from the SYSProductId collection"
 				},
  				SKU: {
@@ -29,7 +28,7 @@ db.createCollection('shopCart', {
 					description: "Description is from the PRODUCT collection, overridable"
 				},
 				Price: {
-					bsonType: "decimal",
+					bsonType: "number",
 					minimum: 0.0,
 					maximum: 99999.99,
 					description: "Price is required"
@@ -57,31 +56,14 @@ db.createCollection('shopCart', {
 		}
 	}
 });
-db.shopCart.createIndex( 
-	{
-		"MemberId": 1
-	}
-);
-db.shopCart.createIndex( 
-	{
-		"SKU": 1
-	}, 
-	{
-		unique: true
-	}
-);
-db.shopCart.createIndex( 
-	{
-		"ProductKeywords": 1
-	}
-);
+
 db.shopCart.insertOne(
 	{
-		MemberId: ObjectId("640914943bb567d97ab19e81"),
-		ProductId: ObjectId("6409194a3bb567d97ab19e84"),
+		MemberId: "640914943bb567d97ab19e81",
+		ProductId: "6409194a3bb567d97ab19e84",
 		SKU: ["SKU1", "SKU2"],
 		Description: "Product Description",
-		Price: NumberDecimal("12345.67"),
+		Price: 12345.67,
 		PaymentMethod: "ACH",
 		ProductPic: "https://a secure pic",
 		ProductKeywords: ['ah one', 'and ah two'],
