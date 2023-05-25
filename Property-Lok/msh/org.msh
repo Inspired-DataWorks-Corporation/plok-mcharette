@@ -3,9 +3,8 @@ db.createCollection('org', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version \"Thu May 25 09:26:31 2023\"",
-   required: ["MemberId", "CompanyName", "CompanyType", "BrandLogoURL",
-    "OwnerEmail", "CompanyAddress", "Common"],
+   description: "version \"Thu May 25 09:32:55 2023\"",
+   required: ["MemberId", "CompanyName", "CompanyType", "BrandLogoURL", "OwnerEmail", "Common"],
    properties: {
     MemberId: {
      bsonType: "objectId",
@@ -132,11 +131,6 @@ db.createCollection('org', {
   }
  }
 });
-db.org.createIndex(
- {
-  "MemberId": 1
- },
-);
 db.org.insertOne(
  {
   MemberId: ObjectId("640914943bb567d97ab19e81"),

@@ -4,8 +4,7 @@ db.createCollection('org', {
 		$jsonSchema: {
 			bsonType: "object",
 			description: QUOTE(VERSION),
-			required: ["MemberId", "CompanyName", "CompanyType", "BrandLogoURL",
-				"OwnerEmail", "CompanyAddress", "Common"],
+			required: ["MemberId", "CompanyName", "CompanyType", "BrandLogoURL", "OwnerEmail", "Common"],
 			properties: {
 				MemberId: {
 					bsonType: "objectId",
@@ -102,11 +101,7 @@ db.createCollection('org', {
 		}
 	}
 });
-db.org.createIndex( 
-	{
-		"MemberId": 1
-	}, 
-);
+
 db.org.insertOne(
 	{
 		MemberId: ObjectId("640914943bb567d97ab19e81"),
