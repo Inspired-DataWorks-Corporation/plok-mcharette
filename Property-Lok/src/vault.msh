@@ -4,14 +4,59 @@ db.createCollection('vault', {
 		$jsonSchema: {
 			bsonType: "object",
 			description: QUOTE(VERSION),
-			required: ["PropertyStorageCode", "Files", "Metadata", "Thumbnails", "Geolocation",
-				"aPropertyStatus", "PropertyStatus", "Common"],
+			required: ["PropertyStorageCode", "EnablePropertyStorageCode", "PropertyName", "PropertySKU", 
+			"SerialVIN","MakeManufacturer", "ModelNumber",  "PropertyDescription", "Metadata", "PropertyStatus", 
+			"PropertyGeolocation", "Common"],
 			properties: {
+				PropertyLockerID: {
+					bsonType: "string",
+					description: "PropertyLocker Parent"
+				},
 				PropertyStorageCode: {
 					bsonType: "string",
 					minLength: 4,
 					maxLength: 128,
-					description: "PropertyStorageCode is a child of the myproperty collection PSC value generated there"
+					description: "PropertyStorageCode is a one way HASH, ALWAYS generated if Enabled or not"
+				},
+				EnablePropertyStorageCode: {
+					bsonType: "bool",
+					description: "Enable/disable PSC to lock and unlock vault item, default is FALSE - no PSC required to unlock the item"
+				},
+				PropertyName: {
+				    bsonType: "string",
+					minLength: 4,
+					maxLength: 128,
+					description: "Customer supplied name"
+				},
+				PropertySKU: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 24,
+					description: "Property SKU is a system generated SKU mnemonic "
+				},
+				SerialVIN: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 64,
+					description: "Property SerialVIN is a system generated SKU mnemonic"
+				},
+				MakeManufacturer: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 64,
+					description: "Property Make Manufacturer is a system generated SKU mnemonic"
+				},
+				ModelNumber: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 36,
+					description: "Property Model Number is a system generated SKU mnemonic"
+				},
+				PropertyDescription: {
+					bsonType: "string",
+					minLength: 4,
+					maxLength: 1024,
+					description: "Property Property Description is up to the user"
 				},
 				Files: {
 					bsonType: "array",
@@ -40,7 +85,6 @@ db.createCollection('vault', {
 						description: "Vault Assets - Thumbnail Pics, Certificates, etc. Defaulted to an image representing the file type, but users can also upload their own images with the file"
 					}
 				},
-#include "GeoLocationDef.inc"	
 				Tags: {
 					bsonType: "array",
 					items: {
@@ -50,11 +94,26 @@ db.createCollection('vault', {
 						description: "Array of tags"
 					}
 				},
-				aPropertyStatus: {
+				PropertyStatus: {
 					bsonType: "string",
-					enum: ["Stored", "For Sale", "Lost","Stolen","Recovered"],
-					description: "aPropertyStatus is required Limited to enum"
-				},		
+					enum: ["Stored", "Locked", "Stolen", "For Sale", "Transferred", "Recovered", "Unrecovered"],
+					description: "NOTE - Stored state follows PSC enabled: if unlocked set to Stored,Locked if locked,set to 'Locked",
+				},
+				PropertyGeolocation: {
+					bsonType: "string",
+					maxLength: 512,
+					description: "Vault Geolocation is the location the of the property when created and string formatted as latitude, longitude: One for each vault."    
+				},
+				DescriptorCategory: {		
+					bsonType: "string",
+					maxLength: 32,
+					description: "Lookup from SYS_CATEGORIES"
+				},
+				AdditionalInformation: {
+					bsonType: "string",
+					maxLength: 256,
+					description: "AdditionalInformation is User generated, maximum 256 chars"
+				},
 				PurchaseDateLocation: {
 					bsonType: "string",
 					maxLength: 64,
@@ -64,11 +123,6 @@ db.createCollection('vault', {
 					minimum: 0.0,
 					maximum: 999999.99
 				},
-				PropertyStatus: {
-					bsonType: "string",
-					enum: ["Stored", "Lost", "Stolen", "For Sale", "Transferred", "Recovered", "Unrecovered"],
-					description: "aPropertyStatus is required Limited to enum"
-				},		
 				SalesReceptURL: {
 					bsonType: "string",
 					minLength: 8,
@@ -82,13 +136,23 @@ db.createCollection('vault', {
 
 db.vault.insertOne(
 	{
+		PropertyLockerID: "0000-0000-0000-0000-0000-0000",
 		PropertyStorageCode: "HASH OF Something",
+		EnablePropertyStorageCode: false,
+		PropertyName: "A rembrandt",
+		PropertySKU: "deadbeef",
+		SerialVIN: "0000001",
+		MakeManufacturer: "Rembrandt",
+		ModelNumber: "A made up number",
+		PropertyDescription: "A rembrandt copy",
 		Files: ["file 1", "File 2" ],
 		Metadata: ["Meta 1", "Meta2"],
 		Thumbnails: ["thumb1", "thumb2"],
-#include "GeoLocationConst.inc"
 		Tags: ["Tag 1", "Tag 2"],
-		aPropertyStatus: "Lost",
+		PropertyStatus: "Lost",
+		PropertyGeolocation: "20.65744, -103.39393",
+		DescriptorCategory: "Art",
+		AdditionalInformation: "Another fake art",
 		PurchaseDateLocation: "5/2/22 at home",
 		AppraisalOrPurchasePrice: 50000,
 		PropertyStatus: "Stored",
