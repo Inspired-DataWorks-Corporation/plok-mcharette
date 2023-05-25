@@ -3,7 +3,7 @@ db.createCollection('sysAchPaymentInfo', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version 1.2.4",
+   description: "version \"Thu May 11 11:33:31 2023\"",
    required: ["Stripe_PayPal", "MerchantAccount", "BankSettings", "Common"],
    properties: {
     Stripe_PayPal: {

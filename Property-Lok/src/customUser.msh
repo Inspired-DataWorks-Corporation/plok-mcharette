@@ -4,8 +4,7 @@ db.createCollection('customUser', {
 		$jsonSchema: {
 			bsonType: "object",
 			description: QUOTE(VERSION),
-			required: ["Email", "Role",
-				"FirstName", "LastName", "UserName", "PoliciesAccepted", "Common", "Address"],
+			required: ["Email", "Role", "FirstName", "LastName", "UserName", "SubscriptionTerm", "PoliciesAccepted", "Common"],
 			properties: {
 				Email: {
 					bsonType: "string",
@@ -15,40 +14,50 @@ db.createCollection('customUser', {
 				},
 				CompanyName: {
 					bsonType: "string",
-					maxLength: 50,
+					maxLength: 64,
 					minLength: 4,
 					description: "unique (CompanyName), copy of UserName if not entered, validate from ORG if not Role=ORG, signin, signup"
 				},
 				Role: {
 					bsonType: "string",
-					enum: ["Admin", "Developer", "Member", "Org", "Visitor"],
-					description: "required. Limited to enum. Default to Member. Generated at signup"
+					enum: ["ADMIN", "DEVELOPER", "MEMBER", "ORG", "VISITOR"],
+					description: "required. Limited to enum. Default to MEMBER. Generated at signup - INVITE Only for Other than Member/Visitor"
 				},
 				FirstName: {
 					bsonType: "string",
- 					minLength: 3,
+ 					minLength: 2,
 					maxLength: 64,
 					description: "required, signup"
 				},
 				LastName: {
 					bsonType: "string",
-					minLength: 3,
+					minLength: 2,
 					maxLength: 128,
 					description: "required, signup"
 				},
 				UserName: {
 					bsonType: "string",
 					minLength: 4,
-					maxLength: 24,
-					description: "required. Must be unique, signin, signup, generated but may be overrriden"
+					maxLength: 128,
+					description: "Generated concentenate 8+8chars of FirstName+LastName: required. Must be unique, signin, signup, generated but may be overiden"
 				},
 				Address: {
-#include "AddressDef.inc"
+					bsonType: "array",
+					items: {
+						bsonType: "string",
+						minLength: 4,
+						maxLength: 1024,
+					},
+					description: "required. \
+						Format: Street, City, State/Region, Postal Code \
+						Needs validation \
+						signup"
 				},
 				MobilePhoneNumber: {
 					bsonType: "string",
-					maxLength: 50,
-					description: " signup"
+					minLength: 10,
+					maxLength: 128,
+					description: " must be a valid 10 digit phone #"
 				},
 				PicAvatarURL: {
 					bsonType: "string",
@@ -58,35 +67,42 @@ db.createCollection('customUser', {
 				},
 				EmailVerified: {
 					bsonType: "bool",
-					description: "generated"
+					description: "Upon MFA acceptance of generated Token"
 				},
 				SubscriptionTerm: {
 					bsonType: "string",
-					enum: ["Monthly", "Annually"],
+					enum: ["Annual", "Upgrade"],
 					description: "string and is required. Limited to enum, signup"
 				},
-				SubscriptionTermStart: {
+				SubscriptionTermExpiry: {
 					bsonType: "date",
-					description: "Date and is required."
+					description: "Today's Date + 1 Year - set in API"
 				},
-#include "GeoLocationDef.inc"
+				Geolocation: {
+					bsonType: "string",
+					maxLength: 128,
+					description: "PropertyGeolocation is string formatted aa latitude, longitude where \
+						latitude coordinate is between -90.0 and 90.90 and \
+						longitude coordinate is between -180.0 and 180.0 \
+						nnn decimal places.",
+				},
 				AlternateFirstname: {
 					bsonType: "string",
- 					minLength: 3,
+ 					minLength: 2,
 					maxLength: 64,
-					description: "signup"
+					description: "signup OPTIONAL"
 				},
 				AlternateLastname: {
 					bsonType: "string",
-					minLength: 3,
+					minLength: 2,
 					maxLength: 128,
-					description: "signup"
+					description: "signup OPTIONAL"
 				},
  				AlternateEmail: {
 					bsonType: "string",
 					minLength: 8,
-					maxLength: 150,
-					description: "signup"
+					maxLength: 128,
+					description: "signup OPTIONAL"
 				},
 				DailySearchLimit: {
 					bsonType: "int",
@@ -137,16 +153,16 @@ db.customUser.insertOne(
 	{	
 		Email: "dont@reachme.com",
 		CompanyName: "Property-Lok",
-		Role: "Member",
+		Role: "MEMBER",
 		FirstName: " Mark",
 		LastName: "Charette",
 		UserName: "mcharet2",
-#include "AddressConst.inc"
-		MobilePhoneNumber: "+52 998 371 8824",
+		Address: ["128 Nowhere St, Nowhere, MA, 12345"],
+		MobilePhoneNumber: "9983718824",
 		PicAvatarURL: "none right now",
 		EmailVerified: false,
-		SubscriptionTerm: "Annually",
-		SubscriptionTermStart: new Date(),
+		SubscriptionTerm: "Annual",
+		SubscriptionTermExpiry : new Date(ISODate().setDate(ISODate().getDate() + 365)),
 #include "GeoLocationConst.inc"
 		AlternateFirstname: "kraM",
 		AlternateLastname: "etterahC",

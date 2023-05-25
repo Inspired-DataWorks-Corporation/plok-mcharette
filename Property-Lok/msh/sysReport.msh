@@ -3,7 +3,7 @@ db.createCollection('sysReport', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version 1.2.4",
+   description: "version \"Thu May 11 11:33:32 2023\"",
    required: ["ReportName", "ReportType", "Description", "Common"],
    properties: {
     ReportName: {

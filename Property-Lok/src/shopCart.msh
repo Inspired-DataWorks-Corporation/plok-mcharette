@@ -15,12 +15,8 @@ db.createCollection('shopCart', {
 					description: "ProductId is from the SYSProductId collection"
 				},
  				SKU: {
-					bsonType: "array",
-					items: {
-						bsonType: "string",
-						maxLength: 128,
-						description: "SKU from the SYSProduct lookup collection"
-					}
+					bsonType: "string",
+					maxLength: 128,
 				},				
 				Description: {
 					bsonType: "string",
@@ -44,6 +40,10 @@ db.createCollection('shopCart', {
 					maxLength: 128,
 					description: "URL of product picture"
 				},
+				SavePaymentType: {
+					bsonType: "bool",
+					description: "SavePaymentType saves as new/updates CARD/ACH data for this member. Can Stripe do this?"
+				},
 				ProductKeywords: {
 					bsonType: "array",
 					items: {
@@ -61,11 +61,12 @@ db.shopCart.insertOne(
 	{
 		MemberId: "640914943bb567d97ab19e81",
 		ProductId: "6409194a3bb567d97ab19e84",
-		SKU: ["SKU1", "SKU2"],
+		SKU: "SKU1",
 		Description: "Product Description",
 		Price: 12345.67,
 		PaymentMethod: "ACH",
 		ProductPic: "https://a secure pic",
+		SavePaymentType: true,
 		ProductKeywords: ['ah one', 'and ah two'],
 #include "CommonConst.inc"
 	}
