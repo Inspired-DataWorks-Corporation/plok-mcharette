@@ -135,14 +135,6 @@ db.customUser.createIndex(
 );
 db.customUser.createIndex( 
 	{
-		"CompanyName": 1
-	},
-	{
-		unique: true
-	}
-);
-db.customUser.createIndex( 
-	{
 		"UserName": 1
 	},
 	{

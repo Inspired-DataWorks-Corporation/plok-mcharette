@@ -1,0 +1,115 @@
+db.myProperty.drop();
+db.createCollection('myProperty', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "v.1.0.3 				 property Collection",
+   required: ["MemberId", "PropertyLockerName", "OwnerFirstname", "OwnerLastname", "Common"],
+   properties: {
+    MemberId: {
+     bsonType: "string",
+     description: "MemberId @belongsTo the customUser/Member collection"
+    },
+    PropertyLockerName: {
+     bsonType: "string",
+     minLength: 4,
+     maxLength: 64,
+     description: "Locker Name HAS to BE unique"
+    },
+    PropertyLockerDescription: {
+     bsonType: "string",
+     minLength: 5,
+     maxLength: 512,
+     description: "LockerDescription is user suppied"
+    },
+    PropertyLockerThumbnail: {
+     bsonType: "string",
+     minLength: 5,
+     maxLength: 256,
+     description: "Property Locker thumbnail URL"
+    },
+    PropertyLockerTags: {
+     bsonType: "array",
+     items: {
+      bsonType: "string",
+      minLength: 4,
+      maxLength: 512,
+      description: "Array of Property Locker Tags"
+     },
+    },
+    OwnerFirstname: {
+     bsonType: "string",
+      minLength: 2,
+     maxLength: 64,
+     description: "OwnerFirstname is required NOTE - OwnerName can be different from Member name, but defaults to that"
+    },
+    OwnerLastname: {
+     bsonType: "string",
+     minLength: 2,
+     maxLength: 128,
+     description: "OwnerLastname is required, NOTE - OwnerName can be different from Member name, but defaults to that"
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.myProperty.createIndex(
+ {
+  "PropertyLockerName": 1
+ },
+ {
+  unique: true
+ }
+);
+db.myProperty.insertOne(
+ {
+  MemberId: "645693f5f875fe1a1c346f0d",
+  PropertyLockerName: "My Property Locker One - Electronics",
+  PropertyLockerDescription: "what's in my Property Locker",
+  PropertyLockerThumbnail: "https://url-to-default-image.jpg",
+  PropertyLockerTags: ["pltag1","pltag2","pltag3"],
+  OwnerFirstname: "Mister",
+  OwnerLastname: "Customer",
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+ }
+);
+db.myProperty.find();
