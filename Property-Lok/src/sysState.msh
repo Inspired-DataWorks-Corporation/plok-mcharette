@@ -1,0 +1,29 @@
+db.sysState.drop();
+db.createCollection('sysState', {
+	validator: {
+		$jsonSchema: {
+			bsonType: "object",
+			description: QUOTE(VERSION),
+			properties: {
+				StateOrTerritory: {
+					bsonType: "string",
+				},
+				USPS: {
+					bsonType: "string"
+				},
+#include "CommonDef.inc"
+			}
+		}
+	}
+});
+db.sysState.insertMany(
+[
+#include "StateAndTerritoryConst.inc"
+]
+);
+db.sysState.insertOne(
+{
+#include "CommonConst.inc"
+}
+);
+db.sysCategory.find();

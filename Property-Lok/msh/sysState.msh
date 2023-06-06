@@ -1,0 +1,129 @@
+db.sysState.drop();
+db.createCollection('sysState', {
+ validator: {
+  $jsonSchema: {
+   bsonType: "object",
+   description: "version \"Tue Jun  6 15:46:46 2023\"",
+   properties: {
+    StateOrTerritory: {
+     bsonType: "string",
+    },
+    USPS: {
+     bsonType: "string"
+    },
+    Common: {
+     bsonType:"object",
+     required: ["Created", "CreatedBy", "Updated", "UpdatedBy", "Active"],
+                    properties:{
+      "Created": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "CreatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Updated": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "UpdatedBy": {
+       "bsonType": "string",
+       "description": "required"
+      },
+      "Active": {
+       "bsonType": "bool",
+       "description": "Defaulted to TRUE"
+      },
+      "Notes": {
+       "bsonType": "string",
+       "maxLength": 512,
+       "description": "Free-form text"
+      }
+     }
+    }
+   }
+  }
+ }
+});
+db.sysState.insertMany(
+[
+{StateOrTerritory:"Alabama", USPS:"AL"},
+{StateOrTerritory:"Alaska", USPS:"AK"},
+{StateOrTerritory:"American Samoa", USPS:"AS"},
+{StateOrTerritory:"Arizona", USPS:"AZ"},
+{StateOrTerritory:"Arkansas", USPS:"AR"},
+{StateOrTerritory:"California", USPS:"CA"},
+{StateOrTerritory:"Canal Zone", USPS:"CZ"},
+{StateOrTerritory:"Colorado", USPS:"CO"},
+{StateOrTerritory:"Commonwealth of the Northern Mariana Islands", USPS:"CM"},
+{StateOrTerritory:"Connecticut", USPS:"CT"},
+{StateOrTerritory:"Delaware", USPS:"DE"},
+{StateOrTerritory:"District of Columbia", USPS:"DC"},
+{StateOrTerritory:"Federated States of Micronesia", USPS:"FM"},
+{StateOrTerritory:"Florida", USPS:"FL"},
+{StateOrTerritory:"Georgia", USPS:"GA"},
+{StateOrTerritory:"Guam", USPS:"GU"},
+{StateOrTerritory:"Hawaii", USPS:"HI"},
+{StateOrTerritory:"Idaho", USPS:"ID"},
+{StateOrTerritory:"Illinois", USPS:"IL"},
+{StateOrTerritory:"Indiana", USPS:"IN"},
+{StateOrTerritory:"Iowa", USPS:"IA"},
+{StateOrTerritory:"Kansas", USPS:"KS"},
+{StateOrTerritory:"Kentucky", USPS:"KY"},
+{StateOrTerritory:"Louisiana", USPS:"LA"},
+{StateOrTerritory:"Maine", USPS:"ME"},
+{StateOrTerritory:"Marshall Islands", USPS:"MH"},
+{StateOrTerritory:"Maryland", USPS:"MD"},
+{StateOrTerritory:"Massachusetts", USPS:"MA"},
+{StateOrTerritory:"Michigan", USPS:"MI"},
+{StateOrTerritory:"Minnesota", USPS:"MN"},
+{StateOrTerritory:"Mississippi", USPS:"MS"},
+{StateOrTerritory:"Missouri", USPS:"MO"},
+{StateOrTerritory:"Montana", USPS:"MT"},
+{StateOrTerritory:"Nebraska", USPS:"NE"},
+{StateOrTerritory:"Nevada", USPS:"NV"},
+{StateOrTerritory:"New Hampshire", USPS:"NH"},
+{StateOrTerritory:"New Jersey", USPS:"NJ"},
+{StateOrTerritory:"New Mexico", USPS:"NM"},
+{StateOrTerritory:"New York", USPS:"NY"},
+{StateOrTerritory:"North Carolina", USPS:"NC"},
+{StateOrTerritory:"North Dakota", USPS:"ND"},
+{StateOrTerritory:"Northern Mariana Islands", USPS:"MP"},
+{StateOrTerritory:"Ohio", USPS:"OH"},
+{StateOrTerritory:"Oklahoma", USPS:"OK"},
+{StateOrTerritory:"Oregon", USPS:"OR"},
+{StateOrTerritory:"Palau", USPS:"PW"},
+{StateOrTerritory:"Pennsylvania", USPS:"PA"},
+{StateOrTerritory:"Puerto Rico", USPS:"PR"},
+{StateOrTerritory:"Rhode Island", USPS:"RI"},
+{StateOrTerritory:"South Carolina", USPS:"SC"},
+{StateOrTerritory:"South Dakota", USPS:"SD"},
+{StateOrTerritory:"Tennessee", USPS:"TN"},
+{StateOrTerritory:"Texas", USPS:"TX"},
+{StateOrTerritory:"Trust Territory of the Pacific Islands", USPS:"TT"},
+{StateOrTerritory:"U.S. Minor Outlying Islands", USPS:""},
+{StateOrTerritory:"Utah", USPS:"UT"},
+{StateOrTerritory:"Vermont", USPS:"VT"},
+{StateOrTerritory:"Virgin Islands", USPS:"VI"},
+{StateOrTerritory:"Virginia", USPS:"VA"},
+{StateOrTerritory:"Washington", USPS:"WA"},
+{StateOrTerritory:"West Virginia", USPS:"WV"},
+{StateOrTerritory:"Wisconsin", USPS:"WI"},
+{StateOrTerritory:"Wyoming", USPS:"WY"},
+]
+);
+db.sysState.insertOne(
+{
+  Common:
+  {
+   Created: "",
+   CreatedBy: "DrewAnderson",
+   Updated: "",
+   UpdatedBy: "drewanderson",
+   Active: true,
+   Notes: "Test note"
+  }
+}
+);
+db.sysCategory.find();
