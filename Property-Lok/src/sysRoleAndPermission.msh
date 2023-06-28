@@ -17,7 +17,7 @@ db.createCollection('sysRoleAndPermission', {
 					description: "required"
 				},
 				AccountID: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "Not sure what this is"
 				},
 				Roles: {
@@ -41,14 +41,10 @@ db.createCollection('sysRoleAndPermission', {
 		}
 	}
 });
-db.sysRoleAndPermission.createIndex( 
-	{
-		"AccountID": 1
-	}
-);
+
 db.sysRoleAndPermission.insertOne(
 	{
-		AccountID: ObjectId("deadbeefdeadbeefdeadbeef"),
+		AccountID: "deadbeefdeadbeefdeadbeef",
 		Roles: ["Role 1", "Role 2"],
 		Permissions: ["Perm1", "Perm2"],
 #include "CommonConst.inc"

@@ -7,7 +7,7 @@ db.createCollection('sysCardInfo', {
 			required: ["MemberID", "CardNumber", "CardType", "NameOnCard", "PostalCode", "Email", "ExpirationDate", "CVV", "Common"],
 			properties: {
 				MemberId: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "MemberId is from the MEMBERS collection"
 				},
 				CardNumber: {
@@ -60,7 +60,7 @@ db.sysCardInfo.createIndex(
 );
 db.sysCardInfo.insertOne( 
 	{
-		MemberID: ObjectId("640914943bb567d97ab19e81"),
+		MemberID: "640914943bb567d97ab19e81",
 		CardNumber: "9645",
 		CardType: "AMEX",
 		NameOnCard: "John Doe",

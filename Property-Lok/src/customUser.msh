@@ -4,9 +4,9 @@ db.createCollection('customUser', {
 		$jsonSchema: {
 			bsonType: "object",
 			description: QUOTE(VERSION),
-			required: ["Email", "Role", "FirstName", "LastName", "UserName", "SubscriptionTerm", "PoliciesAccepted", "Common"],
+			required: ["email", "Role", "FirstName", "LastName", "UserName", "SubscriptionTerm", "PoliciesAccepted", "Common"],
 			properties: {
-				Email: {
+				email: {
 					bsonType: "string",
 					minLength: 8,
 					maxLength: 128,
@@ -127,7 +127,7 @@ db.createCollection('customUser', {
 });
 db.customUser.createIndex(
  	{
-		"Email": 1
+		"email": 1
 	},
 	{
 		unique: true
@@ -143,7 +143,7 @@ db.customUser.createIndex(
 );
 db.customUser.insertOne(
 	{	
-		Email: "dont@reachme.com",
+		email: "dont@reachme.com",
 		CompanyName: "Property-Lok",
 		Role: "MEMBER",
 		FirstName: " Mark",

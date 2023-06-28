@@ -8,7 +8,7 @@ db.createCollection('activity', {
 			required: ["MemberId", "SessionId",  "SessionStart", "IPAddress", "SessionEnd", "Common"],
 			properties: {
 				MemberId: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "MemberId from the MEMBER collection"
 				},
 				SessionId: {
@@ -85,7 +85,7 @@ db.activity.createIndex(
 );
 db.activity.insertOne(
 	{
-		MemberId: ObjectId("640914943bb567d97ab19e81"),
+		MemberId: "640914943bb567d97ab19e81",
 		SessionId: "sess_84266fdbd31d4c2c6d0665f7e8380fa3",
 		SessionStart: new ISODate("2023-03-09T21:34:17.872Z"),
 		IPAddress: "192.168.0.127",

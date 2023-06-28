@@ -3,10 +3,10 @@ db.createCollection('customUser', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version \"Thu May 25 16:47:09 2023\"",
-   required: ["Email", "Role", "FirstName", "LastName", "UserName", "SubscriptionTerm", "PoliciesAccepted", "Common"],
+   description: "version \"Thu Jun 15 12:52:23 2023\"",
+   required: ["email", "Role", "FirstName", "LastName", "UserName", "SubscriptionTerm", "PoliciesAccepted", "Common"],
    properties: {
-    Email: {
+    email: {
      bsonType: "string",
      minLength: 8,
      maxLength: 128,
@@ -151,13 +151,12 @@ db.createCollection('customUser', {
 });
 db.customUser.createIndex(
   {
-  "Email": 1
+  "email": 1
  },
  {
   unique: true
  }
 );
-
 db.customUser.createIndex(
  {
   "UserName": 1
@@ -168,7 +167,7 @@ db.customUser.createIndex(
 );
 db.customUser.insertOne(
  {
-  Email: "dont@reachme.com",
+  email: "dont@reachme.com",
   CompanyName: "Property-Lok",
   Role: "MEMBER",
   FirstName: " Mark",
@@ -195,7 +194,7 @@ db.customUser.insertOne(
    Updated: "",
    UpdatedBy: "drewanderson",
    Active: true,
-   Notes: "Test note"
+   Notes: "Test note from msh"
   }
  }
 );

@@ -7,7 +7,7 @@ db.createCollection('sysTransaction', {
 			required: ["Common"],
 			properties: {
 				MemberId: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "MemberId is from the MEMBERS collection"
 				},
 				TransactionType: {
@@ -19,11 +19,11 @@ db.createCollection('sysTransaction', {
 				ProductID: {
 					bsonType: "array",
 					items: {
-						bsonType: "objectId"
+						bsonType: "string"
 					}
 				},
 				Amount: {
-					bsonType: "decimal",
+					bsonType: "number",
 					minimum: 0.0,
 					maximum: 99999.99,
 					description: "Amount of transaction"
@@ -45,10 +45,10 @@ db.sysTransaction.createIndex(
 );
 db.sysTransaction.insertOne(
 	{
-		MemberId: ObjectId("deadbeefdeadbeefdeadbeef"),
+		MemberId: "deadbeefdeadbeefdeadbeef",
 		TransactionType: "Membership",
-		ProductID: [ObjectId("deadbeefdeadbeefdeadbeeb"), ObjectId("aeadbeefdeadbeefdeadbeef")],
-		Amount: NumberDecimal("12345.67"),
+		ProductID: ["deadbeefdeadbeefdeadbeeb", "aeadbeefdeadbeefdeadbeef"],
+		Amount: 12345.67,
 		PaymentStatus: "Not Paid",
 #include "CommonConst.inc"
 	}

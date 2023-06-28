@@ -3,11 +3,11 @@ db.createCollection('sysCardInfo', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version \"Thu May 11 11:33:31 2023\"",
+   description: "version \"Wed Jun 28 15:49:13 2023\"",
    required: ["MemberID", "CardNumber", "CardType", "NameOnCard", "PostalCode", "Email", "ExpirationDate", "CVV", "Common"],
    properties: {
     MemberId: {
-     bsonType: "objectId",
+     bsonType: "string",
      description: "MemberId is from the MEMBERS collection"
     },
     CardNumber: {
@@ -90,7 +90,7 @@ db.sysCardInfo.createIndex(
 );
 db.sysCardInfo.insertOne(
  {
-  MemberID: ObjectId("640914943bb567d97ab19e81"),
+  MemberID: "640914943bb567d97ab19e81",
   CardNumber: "9645",
   CardType: "AMEX",
   NameOnCard: "John Doe",
@@ -105,7 +105,7 @@ db.sysCardInfo.insertOne(
    Updated: "",
    UpdatedBy: "drewanderson",
    Active: true,
-   Notes: "Test note"
+   Notes: "Test note from msh"
   }
  }
 );

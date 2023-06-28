@@ -3,7 +3,7 @@ db.createCollection('sysRoleAndPermission', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version \"Thu May 11 11:33:31 2023\"",
+   description: "version \"Wed Jun 28 15:35:50 2023\"",
    required: ["Common"],
    properties: {
     Created: {
@@ -17,7 +17,7 @@ db.createCollection('sysRoleAndPermission', {
      description: "required"
     },
     AccountID: {
-     bsonType: "objectId",
+     bsonType: "string",
      description: "Not sure what this is"
     },
     Roles: {
@@ -71,14 +71,9 @@ db.createCollection('sysRoleAndPermission', {
   }
  }
 });
-db.sysRoleAndPermission.createIndex(
- {
-  "AccountID": 1
- }
-);
 db.sysRoleAndPermission.insertOne(
  {
-  AccountID: ObjectId("deadbeefdeadbeefdeadbeef"),
+  AccountID: "deadbeefdeadbeefdeadbeef",
   Roles: ["Role 1", "Role 2"],
   Permissions: ["Perm1", "Perm2"],
   Common:
@@ -88,7 +83,7 @@ db.sysRoleAndPermission.insertOne(
    Updated: "",
    UpdatedBy: "drewanderson",
    Active: true,
-   Notes: "Test note"
+   Notes: "Test note from msh"
   }
  }
 );

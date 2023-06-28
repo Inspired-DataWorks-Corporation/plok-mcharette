@@ -3,21 +3,21 @@ db.createCollection('sysPricing', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version \"Thu May 11 11:33:31 2023\"",
+   description: "version \"Wed Jun 28 15:40:38 2023\"",
    required: ["ProductId", "Common"],
    properties: {
     ProductId: {
-     bsonType: "objectId",
+     bsonType: "string",
      description: "From the sys_product collection"
     },
     RegularPrice: {
-     bsonType: "decimal",
+     bsonType: "number",
      minimum: 0.0,
      maximum: 99999.99,
      description: "Regular pricing"
     },
     SalePrice: {
-     bsonType: "decimal",
+     bsonType: "number",
      minimum: 0.0,
      maximum: 99999.99,
      description: "Sale pricing"
@@ -36,13 +36,13 @@ db.createCollection('sysPricing', {
      description: "Promo Code"
     },
     PromoAmount: {
-     bsonType: "decimal",
+     bsonType: "number",
      minimum: 0.0,
      maximum: 99999.99,
      description: "Promo pricing"
     },
     TaxAmount: {
-     bsonType: "decimal",
+     bsonType: "number",
      minimum: 0.0,
      maximum: 99999.99,
      description: "Taxable amount pricing"
@@ -107,14 +107,14 @@ db.sysPricing.createIndex(
 );
 db.sysPricing.insertOne(
  {
-  ProductId: ObjectId("deadbeefdeadbeefdeadbeef"),
-  RegularPrice: NumberDecimal("99999.99"),
-  SalePrice: NumberDecimal("9999.99"),
+  ProductId: "deadbeefdeadbeefdeadbeef",
+  RegularPrice: 99999.99,
+  SalePrice: 9999.99,
   SaleDateStart: new Date(),
   SaleDateEnd: new Date(),
   PromoCode: "ABC",
-  PromoAmount: NumberDecimal("99.99"),
-  TaxAmount: NumberDecimal("9999.99"),
+  PromoAmount: 99.99,
+  TaxAmount: 9999.99,
   CurrencyType: "USD",
   Keywords: ["Master", "Metrics", "Log"],
   Common:
@@ -124,7 +124,7 @@ db.sysPricing.insertOne(
    Updated: "",
    UpdatedBy: "drewanderson",
    Active: true,
-   Notes: "Test note"
+   Notes: "Test note from msh"
   }
  }
 );

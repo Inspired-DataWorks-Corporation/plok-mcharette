@@ -7,7 +7,7 @@ db.createCollection('profile', {
 			required: ["MemberId", "Common"],
 			properties: {
 				MemberId: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "MemberId from the MEMBER collection"
 				},
 				SendReportDetails: {
@@ -57,7 +57,7 @@ db.profile.createIndex(
 );
 db.profile.insertOne(
 	{
-		MemberId: ObjectId("640914943bb567d97ab19e81"),
+		MemberId: "640914943bb567d97ab19e81",
 		SendReportDetails: true,
 		SendNotifyBuy: true,
 		ReceiveReportDetails: true,

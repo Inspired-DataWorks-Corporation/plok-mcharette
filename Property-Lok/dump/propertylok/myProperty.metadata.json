@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"PropertyLockerName":{"$numberInt":"1"}},"name":"PropertyLockerName_1","unique":true}],"uuid":"c3f0deb2c02643a680a96a30438ae86f","collectionName":"myProperty","type":"collection"}

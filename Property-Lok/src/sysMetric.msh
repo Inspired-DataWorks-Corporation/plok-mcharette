@@ -7,11 +7,11 @@ db.createCollection('sysMetric', {
 			required: ["Common"],
 			properties: {
 				MemberId: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "MemberId is from the MEMBERS collection"
 				},
 				OrgId: {
-					bsonType: "objectId",
+					bsonType: "string",
 					description: "MemberId is from the ORG collection"
 				},
 				BySKU: {
@@ -25,7 +25,7 @@ db.createCollection('sysMetric', {
 				ByCustomer: {
 					bsonType: "array",
 					items: {
-						bsonType: "objectId",
+						bsonType: "string",
 						description: "Customer from the Member collection"
 					}
 				},				
@@ -42,27 +42,12 @@ db.sysMetric.createIndex(
 		unique: true
 	}
 );
-db.sysMetric.createIndex( 
-	{
-		"OrgId": 1
-	}
-);
-db.sysMetric.createIndex( 
-	{
-		"BySKU": 1
-	}
-);
-db.sysMetric.createIndex( 
-	{
-		"ByCustomer": 1
-	}
-);
 db.sysMetric.insertOne(
 	{
-		MemberId: ObjectId("640914943bb567d97ab19e81"),
-		OrgId: ObjectId("640b4dc17f012b8833862c62"),
+		MemberId: "640914943bb567d97ab19e81",
+		OrgId: "640b4dc17f012b8833862c62",
 		BySKU: ["SKU1", "SKU2"],		
-		ByCustomer: [ObjectId("640914943bb567d97ab19e81")],				
+		ByCustomer: ["640914943bb567d97ab19e81"],				
 #include "CommonConst.inc"
 	}
 );

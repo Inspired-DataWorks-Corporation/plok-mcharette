@@ -3,7 +3,7 @@ db.createCollection('sysFilelocker', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version \"Thu May 11 11:33:31 2023\"",
+   description: "version \"Wed Jun 28 15:44:45 2023\"",
    required: ["Common"],
    properties: {
     FileId: {
@@ -20,8 +20,8 @@ db.createCollection('sysFilelocker', {
      }
     },
     PropertyId: {
-     bsonType: "objectId",
-     description: "ObjectId from the PROPERTY collection"
+     bsonType: "string",
+     description: "object from the PROPERTY collection"
     },
     Description: {
      bsonType: "string",
@@ -46,7 +46,7 @@ db.sysFilelocker.insertOne(
  {
   FileId: "https://s3.us-west-2.amazonaws.com/DOC-EXAMPLE-BUCKET1/red-ranger.jpg",
   FileMeta: ["Creation, 01/02/2023", "Size, 1024000", "Type, jpg"],
-  PropertyId: ObjectId("640a1d33b856f2bbba83995c"),
+  PropertyId: "640a1d33b856f2bbba83995c",
   Description: "A Red Ford Ranger",
   Common:
   {
@@ -55,7 +55,7 @@ db.sysFilelocker.insertOne(
    Updated: "",
    UpdatedBy: "drewanderson",
    Active: true,
-   Notes: "Test note"
+   Notes: "Test note from msh"
   }
  }
 );

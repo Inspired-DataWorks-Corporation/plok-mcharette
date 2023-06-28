@@ -3,7 +3,7 @@ db.createCollection('sysProduct', {
  validator: {
   $jsonSchema: {
    bsonType: "object",
-   description: "version \"Thu May 11 11:33:31 2023\"",
+   description: "version \"Wed Jun 28 15:54:40 2023\"",
    required: ["Common"],
    properties: {
      SKU: {
@@ -22,10 +22,10 @@ db.createCollection('sysProduct', {
      description: "Product description"
     },
     Price: {
-     bsonType: "decimal",
+     bsonType: "number",
      minimum: 0.0,
      maximum: 99999.99,
-     description: "Price must be a decimal"
+     description: "Price must be a number"
     },
     Common: {
      bsonType:"object",
@@ -80,7 +80,7 @@ db.sysProduct.insertOne(
   SKU: "SKU1",
   ProductName: "A Product",
   Description: "A Red Ford Ranger",
-  Price: NumberDecimal("9999.99"),
+  Price: 9999.99,
   Common:
   {
    Created: "",
@@ -88,7 +88,7 @@ db.sysProduct.insertOne(
    Updated: "",
    UpdatedBy: "drewanderson",
    Active: true,
-   Notes: "Test note"
+   Notes: "Test note from msh"
   }
  }
 );

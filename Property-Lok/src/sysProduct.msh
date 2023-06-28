@@ -22,10 +22,10 @@ db.createCollection('sysProduct', {
 					description: "Product description"
 				},
 				Price: {
-					bsonType: "decimal",
+					bsonType: "number",
 					minimum: 0.0,
 					maximum: 99999.99,
-					description: "Price must be a decimal"
+					description: "Price must be a number"
 				},
 #include "CommonDef.inc"
 			}
@@ -50,7 +50,7 @@ db.sysProduct.insertOne(
 		SKU: "SKU1",
 		ProductName: "A Product",
 		Description: "A Red Ford Ranger",
-		Price: NumberDecimal("9999.99"),
+		Price: 9999.99,
 #include "CommonConst.inc"
 	}
 );
